@@ -1,7 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- One input card: badge | name + what it blasts | shortcut state pill.
-     The title auto-shrinks (20→14 sp) so long names and long translations of the pill
-     ("Adicionar", "Hinzufügen") share the row without breaking words. -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/card"

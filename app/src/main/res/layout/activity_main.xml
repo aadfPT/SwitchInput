@@ -1,6 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Layout: a fixed left column explains the app and shows the count; the right side is a
-     two-column grid of input cards that the D-pad walks through. 48dp TV safe margins. -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -64,7 +62,6 @@
             android:layout_height="0dp"
             android:layout_weight="1" />
 
-        <!-- Language override; opens a single-choice dialog. -->
         <TextView
             android:id="@+id/language"
             style="@style/Text.CardMeta"
@@ -80,6 +77,15 @@
             android:background="@drawable/card_bg"
             android:textColor="@color/fg"
             android:text="@string/language" />
+
+        <TextView
+            android:id="@+id/version"
+            style="@style/Text.CardMeta"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:textSize="12sp"
+            android:text="v" />
 
         <TextView
             android:id="@+id/status"

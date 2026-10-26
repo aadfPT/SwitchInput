@@ -1,13 +1,3 @@
-"""Build one tiny APK per Fire TV input type and drop them in app/src/main/assets/stubs/.
-
-Why: Projectivy (and the Fire TV launcher) show ONE card per package, so activity-aliases in
-the main app never appear as separate TV apps. A separate package per input does. Each stub
-is the same classes.dex (tools/stub/Trampoline.java) with its own package name, label,
-banner/icon and a meta-data entry naming the input; the picker installs/uninstalls them as root.
-
-Needs the SDK from tools/env.ps1 (build-tools 34: aapt2, d8, zipalign, apksigner) and the
-Android debug keystore. Run from the repo root:  python -I tools/build_stubs.py
-"""
 import json
 import os
 import shutil
@@ -18,15 +8,17 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 SDK = Path(os.environ.get("ANDROID_HOME") or Path.home() / "scoop/apps/android-clt/current")
-BT = SDK / "build-tools" / "34.0.0"
+BUILD_TOOLS = SDK / "build-tools" / "34.0.0"
 ANDROID_JAR = SDK / "platforms" / "android-34" / "android.jar"
 JAVA_HOME = Path(os.environ.get("JAVA_HOME") or Path.home() / "scoop/apps/temurin17-jdk/current")
-KEYSTORE = Path.home() / ".android" / "debug.keystore"
+DEBUG_KEYSTORE = Path.home() / ".android" / "debug.keystore"
+KEYSTORE_PROPERTIES = ROOT / "keystore.properties"
+VERSION_PROPERTIES = ROOT / "version.properties"
 TYPES_JSON = ROOT / "tools" / "input_types.json"
 RES_PNG = ROOT / "app" / "src" / "main" / "res" / "drawable-xhdpi"
 OUT = ROOT / "app" / "src" / "main" / "assets" / "stubs"
 WORK = ROOT / "build" / "stubs"
-STUB_PKG_PREFIX = "pt.aadf.sourcesswitcher.input."
+STUB_PACKAGE_PREFIX = "pt.aadf.sourcesswitcher.input."
 
 MANIFEST = """<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
@@ -51,75 +43,101 @@ MANIFEST = """<?xml version="1.0" encoding="utf-8"?>
 """
 
 
-def run(*cmd, **kw):
-    r = subprocess.run([str(c) for c in cmd], capture_output=True, text=True, **kw)
+def run(*cmd):
+    r = subprocess.run([str(c) for c in cmd], capture_output=True, text=True)
     if r.returncode != 0:
         sys.exit(f"command failed: {' '.join(str(c) for c in cmd)}\n{r.stdout}\n{r.stderr}")
     return r
 
 
+def read_properties(path):
+    props = {}
+    for line in path.read_text(encoding="utf-8").splitlines():
+        line = line.strip()
+        if line and not line.startswith("#") and "=" in line:
+            k, v = line.split("=", 1)
+            props[k.strip()] = v.strip()
+    return props
+
+
+def signing():
+    if KEYSTORE_PROPERTIES.exists():
+        p = read_properties(KEYSTORE_PROPERTIES)
+        return Path(p["storeFile"]), p["storePassword"], p["keyAlias"], p["keyPassword"]
+    if not DEBUG_KEYSTORE.exists():
+        sys.exit(f"missing {DEBUG_KEYSTORE}: run a gradle debug build once")
+    return DEBUG_KEYSTORE, "android", "androiddebugkey", "android"
+
+
+def xml_text(s):
+    return s.replace("&", "&amp;").replace("<", "&lt;").replace("'", "\\'")
+
+
 def build_dex():
-    cls = WORK / "classes"
-    shutil.rmtree(cls, ignore_errors=True)
-    cls.mkdir(parents=True)
+    classes = WORK / "classes"
+    shutil.rmtree(classes, ignore_errors=True)
+    classes.mkdir(parents=True)
     run(JAVA_HOME / "bin" / "javac", "-source", "8", "-target", "8", "-bootclasspath", ANDROID_JAR,
-        "-d", cls, ROOT / "tools" / "stub" / "Trampoline.java")
-    dexdir = WORK / "dex"
-    shutil.rmtree(dexdir, ignore_errors=True)
-    dexdir.mkdir()
-    run(BT / "d8.bat", "--release", "--min-api", "25", "--lib", ANDROID_JAR, "--output", dexdir,
-        *cls.rglob("*.class"))
-    return dexdir / "classes.dex"
+        "-d", classes, ROOT / "tools" / "stub" / "Trampoline.java")
+    dex_dir = WORK / "dex"
+    shutil.rmtree(dex_dir, ignore_errors=True)
+    dex_dir.mkdir()
+    run(BUILD_TOOLS / "d8.bat", "--release", "--min-api", "25", "--lib", ANDROID_JAR, "--output", dex_dir,
+        *classes.rglob("*.class"))
+    return dex_dir / "classes.dex"
 
 
-def build_stub(t, label, dex, vc, vn, labels=None):
-    key = t.lower()
-    d = WORK / key
-    shutil.rmtree(d, ignore_errors=True)
+def write_stub_resources(d, label, labels_by_qualifier):
     (d / "res" / "values").mkdir(parents=True)
-    (d / "res" / "drawable-xhdpi").mkdir(parents=True)
-    esc = label.replace("&", "&amp;").replace("<", "&lt;").replace("'", "\\'")
     (d / "res" / "values" / "strings.xml").write_text(
-        f'<resources><string name="label">{esc}</string></resources>', encoding="utf-8")
-    for qual, l in (labels or {}).items():
-        # Localised shortcut name: launchers show it in the system language.
-        ld = d / "res" / f"values-{qual}"
+        f'<resources><string name="label">{xml_text(label)}</string></resources>', encoding="utf-8")
+    for qualifier, localized in labels_by_qualifier.items():
+        ld = d / "res" / f"values-{qualifier}"
         ld.mkdir()
-        e = l.replace("&", "&amp;").replace("<", "&lt;").replace("'", "\'")
-        (ld / "strings.xml").write_text(f'<resources><string name="label">{e}</string></resources>', encoding="utf-8")
-    shutil.copy(RES_PNG / f"banner_{key}.png", d / "res" / "drawable-xhdpi" / "banner.png")
-    shutil.copy(RES_PNG / f"ic_{key}.png", d / "res" / "drawable-xhdpi" / "ic.png")
-    (d / "AndroidManifest.xml").write_text(MANIFEST.format(pkg=STUB_PKG_PREFIX + key, type=t, vc=vc, vn=vn), encoding="utf-8")
-    comp = d / "compiled"
-    comp.mkdir()
-    run(BT / "aapt2.exe", "compile", "--dir", d / "res", "-o", comp / "res.zip")
+        (ld / "strings.xml").write_text(
+            f'<resources><string name="label">{xml_text(localized)}</string></resources>', encoding="utf-8")
+
+
+def build_stub(entry, dex, version, key):
+    t = entry["type"]
+    name = t.lower()
+    d = WORK / name
+    shutil.rmtree(d, ignore_errors=True)
+    write_stub_resources(d, entry["label"], entry.get("labels", {}))
+    (d / "res" / "drawable-xhdpi").mkdir(parents=True)
+    shutil.copy(RES_PNG / f"banner_{name}.png", d / "res" / "drawable-xhdpi" / "banner.png")
+    shutil.copy(RES_PNG / f"ic_{name}.png", d / "res" / "drawable-xhdpi" / "ic.png")
+    (d / "AndroidManifest.xml").write_text(
+        MANIFEST.format(pkg=STUB_PACKAGE_PREFIX + name, type=t, vc=version["VERSION_CODE"], vn=version["VERSION_NAME"]),
+        encoding="utf-8")
+    compiled = d / "compiled"
+    compiled.mkdir()
+    run(BUILD_TOOLS / "aapt2.exe", "compile", "--dir", d / "res", "-o", compiled / "res.zip")
     unsigned = d / "unsigned.apk"
-    run(BT / "aapt2.exe", "link", "-o", unsigned, "-I", ANDROID_JAR, "--manifest", d / "AndroidManifest.xml",
-        comp / "res.zip")
+    run(BUILD_TOOLS / "aapt2.exe", "link", "-o", unsigned, "-I", ANDROID_JAR, "--manifest", d / "AndroidManifest.xml",
+        compiled / "res.zip")
     with zipfile.ZipFile(unsigned, "a", compression=zipfile.ZIP_DEFLATED) as z:
         z.write(dex, "classes.dex")
     aligned = d / "aligned.apk"
-    run(BT / "zipalign.exe", "-f", "4", unsigned, aligned)
-    final = OUT / f"{key}.apk"
-    run(BT / "apksigner.bat", "sign", "--ks", KEYSTORE, "--ks-pass", "pass:android", "--key-pass", "pass:android",
-        "--v4-signing-enabled", "false", "--out", final, aligned)
+    run(BUILD_TOOLS / "zipalign.exe", "-f", "4", unsigned, aligned)
+    store, store_pass, alias, key_pass = key
+    final = OUT / f"{name}.apk"
+    run(BUILD_TOOLS / "apksigner.bat", "sign", "--ks", store, "--ks-pass", f"pass:{store_pass}",
+        "--ks-key-alias", alias, "--key-pass", f"pass:{key_pass}", "--v4-signing-enabled", "false",
+        "--out", final, aligned)
     return final
 
 
 def main():
-    if not KEYSTORE.exists():
-        sys.exit(f"missing {KEYSTORE}: run a gradle debug build once")
-    types = json.loads(TYPES_JSON.read_text(encoding="utf-8"))
-    vc, vn = types["versionCode"], types["versionName"]
+    version = read_properties(VERSION_PROPERTIES)
+    key = signing()
+    types = json.loads(TYPES_JSON.read_text(encoding="utf-8"))["types"]
     OUT.mkdir(parents=True, exist_ok=True)
     for old in list(OUT.glob("*.apk")) + list(OUT.glob("*.idsig")):
         old.unlink()
     dex = build_dex()
-    total = 0
-    for entry in types["types"]:
-        apk = build_stub(entry["type"], entry["label"], dex, vc, vn, entry.get("labels"))
-        total += apk.stat().st_size
-    print(f"built {len(types['types'])} stub APKs, {total // 1024} KB total -> {OUT}")
+    total = sum(build_stub(entry, dex, version, key).stat().st_size for entry in types)
+    print(f"built {len(types)} stub APKs, {total // 1024} KB total, signed with {key[0].name} -> {OUT}")
 
 
 if __name__ == "__main__":

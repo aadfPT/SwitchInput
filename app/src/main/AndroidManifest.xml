@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!-- Fire TV / Projectivy list apps that declare a LEANBACK_LAUNCHER activity. -->
     <uses-feature android:name="android.software.leanback" android:required="false" />
     <uses-feature android:name="android.hardware.touchscreen" android:required="false" />
 
@@ -12,7 +11,6 @@
         android:theme="@style/Theme.SourcesSwitcher"
         android:allowBackup="false">
 
-        <!-- The app itself: choose which inputs get a launcher shortcut. -->
         <activity
             android:name=".MainActivity"
             android:exported="true">
@@ -23,8 +21,6 @@
             </intent-filter>
         </activity>
 
-        <!-- Target of every shortcut: the per-input stub packages (assets/stubs, built by
-             tools/build_stubs.py) start it with an "input" extra. Sends the switch and exits. -->
         <activity
             android:name=".SwitchActivity"
             android:exported="true"
@@ -33,7 +29,6 @@
             android:taskAffinity=""
             android:theme="@style/Theme.SourcesSwitcher.Invisible" />
 
-        <!-- Lets AppCompat persist the language chosen in the app (setApplicationLocales). -->
         <service
             android:name="androidx.appcompat.app.AppLocalesMetadataHolderService"
             android:enabled="false"

@@ -1,5 +1,4 @@
 <resources>
-    <!-- Português de Portugal (values-pt-rBR holds the Brazilian variant). -->
     <string name="eyebrow">Fire TV · Controlo de equipamentos</string>
     <string name="intro">Cada entrada que adicionar passa a ser uma app própria no launcher. Abra-a e o televisor muda de entrada; a app fecha-se sozinha.</string>
     <string name="legend_select">Selecionar: adicionar ou remover o atalho</string>

@@ -56,17 +56,36 @@ stick (edit `FireAddr` for yours).
 .\tools\deploy.ps1            # build stubs + gradle assembleDebug + adb install -r + open the app
 .\tools\deploy.ps1 -NoLaunch  # build + install only
 .\tools\deploy.ps1 -SkipBuild # install the existing APK
+.\tools\deploy.ps1 -Release   # release build, signed with keystore.properties (see below)
+.\tools\deploy.ps1 -Release -Replace   # uninstall first; needed once when the signing key changes
 ```
 
-Generated inputs (run only after changing the type list or palette in the script):
+Generated inputs (run only after changing the type list or translations in the script):
 
 ```powershell
-python -I tools\gen_inputs.py    # res/values/input_types.xml, res/drawable-xhdpi/*.png, tools/input_types.json
-python -I tools\build_stubs.py   # assets/stubs/*.apk (deploy.ps1 runs this; needs ~/.android/debug.keystore)
+python -I tools\gen_inputs.py    # res/values*/input_types.xml, res/drawable-xhdpi/*.png, tools/input_types.json
+python -I tools\build_stubs.py   # assets/stubs/*.apk (deploy.ps1 runs this)
 ```
 
-Reinstalling with `-r` keeps installed shortcuts and Magisk's root grant (same signing key,
-same uid).
+Reinstalling with `-r` keeps installed shortcuts and Magisk's root grant as long as the
+signing key is the same. A key change (debug → release) needs `-Replace`, and Magisk asks
+for root again because the app gets a new uid.
+
+## Versioning and releases
+
+- `version.properties` is the single source: `VERSION_NAME` (semver) and `VERSION_CODE`
+  (major·100 + minor·10 + patch). Gradle and `tools/build_stubs.py` read it, so the app and
+  every stub carry the same version; the main screen shows it.
+- Release signing: `keystore.properties` at the repo root (git-ignored) with `storeFile`,
+  `storePassword`, `keyAlias`, `keyPassword`. The keystore lives outside the repo
+  (`~/.android/sourcesswitcher-release.jks`). Without the file, release builds fall back to
+  the debug key. Stubs are signed with the same key as the app.
+- Releasing: bump `version.properties`, add a `CHANGELOG.md` entry, run
+  `.\tools\deploy.ps1 -Release`, copy `app/build/outputs/apk/release/app-release.apk` to
+  `dist/SwitchInput-<version>.apk` (git-ignored), tag `v<version>` and attach the APK to the
+  GitHub release.
+- Never commit `keystore.properties`, `*.jks`, `*.keystore`, `re/data/` or `diag/*.txt`:
+  the device dumps contain serial numbers, MAC addresses and endpoint ids.
 
 ## Project layout
 
@@ -77,7 +96,7 @@ same uid).
 - `tools/` – `deploy.ps1`, `env.ps1`, `fire.ps1`, `gen_inputs.py`, `build_stubs.py`,
   `stub/Trampoline.java`, plus the original adb probe batch.
 - `re/` – reverse-engineering notes; pulled APKs and jadx output are git-ignored.
-- `diag/` – package dumps and screenshots captured on the device.
+- `diag/` – screenshots captured on the device (the raw package dumps stay local, git-ignored).
 - `docs/screenshots/` – images used by the README.
 
 ## Verifying on the device

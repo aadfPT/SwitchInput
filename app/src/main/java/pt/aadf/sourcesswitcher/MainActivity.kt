@@ -12,13 +12,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
-/**
- * The app's own screen: every input Fire TV knows about, as a card. Select toggles the
- * input's launcher shortcut on or off; a long press switches to it right away.
- */
 class MainActivity : AppCompatActivity() {
     private lateinit var status: TextView
-    private lateinit var grid: RecyclerView
+    private lateinit var list: RecyclerView
     private val main = Handler(Looper.getMainLooper())
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,11 +22,17 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         status = findViewById(R.id.status)
-        grid = findViewById(R.id.grid)
-        grid.layoutManager = LinearLayoutManager(this)  // one full-width row per input
+        list = findViewById(R.id.grid)
+        list.layoutManager = LinearLayoutManager(this)
+        findViewById<TextView>(R.id.version).text = "v" + BuildConfig.VERSION_NAME
         val language = findViewById<TextView>(R.id.language)
         language.text = getString(R.string.language_value, AppLocale.displayName(this, AppLocale.current(this)))
         language.setOnClickListener { chooseLanguage() }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        load()
     }
 
     private fun chooseLanguage() {
@@ -41,16 +43,9 @@ class MainActivity : AppCompatActivity() {
             .setSingleChoiceItems(names, AppLocale.CHOICES.indexOf(current)) { dialog, which ->
                 dialog.dismiss()
                 val tag = AppLocale.CHOICES[which]
-                if (tag != current) AppLocale.apply(this, tag)  // AppCompat recreates the activity
+                if (tag != current) AppLocale.apply(this, tag)
             }
             .show()
-    }
-
-    /** Re-read the equipment list every time the screen comes to the front, so equipment
-     *  added in Fire TV Settings while this app sat in the background shows up at once. */
-    override fun onStart() {
-        super.onStart()
-        load()
     }
 
     private fun load() {
@@ -68,51 +63,53 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun show(cfg: InputRepository.Config) {
-        val items = cfg.inputs.map { Row(it, Shortcuts.exists(this, it.type), Shortcuts.isEnabled(this, it.type)) }
-        grid.adapter = Adapter(items,
-            onToggle = { row ->
-                if (!row.supported) {
-                    status.setText(R.string.unknown_input); return@Adapter
-                }
-                if (row.busy) return@Adapter
-                val on = !row.enabled
-                row.busy = true
-                status.text = getString(if (on) R.string.adding else R.string.removing, row.input.label)
-                Thread {
-                    // Installing / uninstalling the stub package takes a second or two.
-                    val err = try { Shortcuts.setEnabled(this, row.input.type, on) } catch (e: Exception) { e.toString() }
-                    main.post {
-                        row.busy = false
-                        if (err == null) {
-                            row.enabled = on
-                            status.text = getString(if (on) R.string.added else R.string.removed, row.input.label)
-                            main.postDelayed({ updateCount(items) }, 2500)
-                        } else {
-                            status.text = getString(R.string.shortcut_failed, err)
-                        }
-                        grid.adapter?.notifyItemChanged(items.indexOf(row))
-                    }
-                }.start()
-            },
-            onTry = { row ->
-                status.text = getString(R.string.switching_to, row.input.label)
-                Thread {
-                    val err = try { Switcher.switchTo(row.input.type, cfg.endpointId, cfg.deviceId) } catch (e: Exception) { e.toString() }
-                    main.post { status.text = if (err == null) getString(R.string.switching_to, row.input.label) else getString(R.string.switch_failed, err) }
-                }.start()
-            })
-        updateCount(items)
-        grid.requestFocus()
+        val rows = cfg.inputs.map { Row(it, Shortcuts.exists(this, it.type), Shortcuts.isEnabled(this, it.type)) }
+        list.adapter = Adapter(rows, onToggle = { toggleShortcut(it, rows) }, onTry = { switchNow(it, cfg) })
+        updateCount(rows)
+        list.requestFocus()
     }
 
-    private fun updateCount(items: List<Row>) {
-        val n = items.count { it.enabled }
+    private fun toggleShortcut(row: Row, rows: List<Row>) {
+        if (!row.supported) {
+            status.setText(R.string.unknown_input)
+            return
+        }
+        if (row.busy) return
+        val on = !row.enabled
+        row.busy = true
+        status.text = getString(if (on) R.string.adding else R.string.removing, row.input.label)
+        Thread {
+            val err = try { Shortcuts.setEnabled(this, row.input.type, on) } catch (e: Exception) { e.toString() }
+            main.post {
+                row.busy = false
+                if (err == null) {
+                    row.enabled = on
+                    status.text = getString(if (on) R.string.added else R.string.removed, row.input.label)
+                    main.postDelayed({ updateCount(rows) }, 2500)
+                } else {
+                    status.text = getString(R.string.shortcut_failed, err)
+                }
+                list.adapter?.notifyItemChanged(rows.indexOf(row))
+            }
+        }.start()
+    }
+
+    private fun switchNow(row: Row, cfg: InputRepository.Config) {
+        status.text = getString(R.string.switching_to, row.input.label)
+        Thread {
+            val err = try { Switcher.switchTo(row.input.type, cfg.endpointId, cfg.deviceId) } catch (e: Exception) { e.toString() }
+            main.post { status.text = if (err == null) getString(R.string.switching_to, row.input.label) else getString(R.string.switch_failed, err) }
+        }.start()
+    }
+
+    private fun updateCount(rows: List<Row>) {
+        val n = rows.count { it.enabled }
         status.text = if (n == 0) getString(R.string.status_count_none) else resources.getQuantityString(R.plurals.status_count, n, n)
     }
 
     class Row(val input: InputRepository.Input, val supported: Boolean, var enabled: Boolean, var busy: Boolean = false)
 
-    private class Adapter(val items: List<Row>, val onToggle: (Row) -> Unit, val onTry: (Row) -> Unit) :
+    private class Adapter(val rows: List<Row>, val onToggle: (Row) -> Unit, val onTry: (Row) -> Unit) :
         RecyclerView.Adapter<Adapter.VH>() {
 
         class VH(v: View) : RecyclerView.ViewHolder(v) {
@@ -127,10 +124,10 @@ class MainActivity : AppCompatActivity() {
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
             VH(LayoutInflater.from(parent.context).inflate(R.layout.item_input, parent, false))
 
-        override fun getItemCount() = items.size
+        override fun getItemCount() = rows.size
 
         override fun onBindViewHolder(h: VH, pos: Int) {
-            val row = items[pos]
+            val row = rows[pos]
             val ctx = h.itemView.context
             val (small, big) = badge(row.input.type)
             h.badgeSmall.text = small
@@ -138,30 +135,33 @@ class MainActivity : AppCompatActivity() {
             h.badge.text = big
             h.badge.textSize = if (big.length <= 2) 24f else if (big.length <= 4) 16f else 13f
             h.label.text = row.input.label
-            // Second line: what the switch blasts when that adds information (PlayStation -> HDMI 2,
-            // Fire TV -> Power on + HDMI 3); otherwise the voice command the shortcut replaces.
-            val fns = row.input.functions
-            h.meta.text = if (fns.isEmpty() || fns == listOf(row.input.type))
-                ctx.getString(R.string.voice_phrase, row.input.label)
-            else fns.joinToString(" + ") { pretty(it) }
+            h.meta.text = secondLine(ctx, row.input)
             bindPill(h, row)
             h.card.setOnClickListener { onToggle(row) }
             h.card.setOnLongClickListener { onTry(row); true }
             h.card.setOnFocusChangeListener { v, focused ->
-                v.animate().scaleX(if (focused) 1.03f else 1f).scaleY(if (focused) 1.03f else 1f).setDuration(120).start()
+                val scale = if (focused) 1.03f else 1f
+                v.animate().scaleX(scale).scaleY(scale).setDuration(120).start()
             }
             h.card.alpha = if (row.supported) 1f else 0.45f
             h.card.contentDescription = row.input.label + ", " + ctx.getString(if (row.enabled) R.string.pill_on else R.string.pill_off)
         }
 
-        private fun bindPill(h: VH, row: Row) {
-            val ctx = h.itemView.context
-            h.pill.setText(if (row.busy) R.string.pill_busy else if (row.enabled) R.string.pill_on else R.string.pill_off)
-            h.pill.setBackgroundResource(if (row.enabled && !row.busy) R.drawable.pill_on else R.drawable.pill_off)
-            h.pill.setTextColor(ctx.getColor(if (row.enabled && !row.busy) R.color.accent_fg else R.color.muted))
+        private fun secondLine(ctx: android.content.Context, input: InputRepository.Input): String {
+            val fns = input.functions
+            val nothingBeyondTheTypeItself = fns.isEmpty() || fns == listOf(input.type)
+            return if (nothingBeyondTheTypeItself) ctx.getString(R.string.voice_phrase, input.label)
+            else fns.joinToString(" + ") { pretty(it) }
         }
 
-        /** Badge text: ("HDMI", "2") for HDMI inputs, ("", short code) otherwise. */
+        private fun bindPill(h: VH, row: Row) {
+            val ctx = h.itemView.context
+            val lit = row.enabled && !row.busy
+            h.pill.setText(if (row.busy) R.string.pill_busy else if (row.enabled) R.string.pill_on else R.string.pill_off)
+            h.pill.setBackgroundResource(if (lit) R.drawable.pill_on else R.drawable.pill_off)
+            h.pill.setTextColor(ctx.getColor(if (lit) R.color.accent_fg else R.color.muted))
+        }
+
         private fun badge(type: String): Pair<String, String> {
             Regex("^HDMI_(\\d)$").find(type)?.let { return "HDMI" to it.groupValues[1] }
             return "" to when (type) {

@@ -1,7 +1,17 @@
+import java.util.Properties
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
 }
+
+fun properties(name: String): Properties = Properties().apply {
+    val f = rootProject.file(name)
+    if (f.exists()) f.inputStream().use { load(it) }
+}
+
+val version = properties("version.properties")
+val keystore = properties("keystore.properties")
 
 android {
     namespace = "pt.aadf.sourcesswitcher"
@@ -9,17 +19,31 @@ android {
 
     defaultConfig {
         applicationId = "pt.aadf.sourcesswitcher"
-        // Fire OS 8 (this stick) is API 30; Fire OS 7 is 28, Fire OS 6 is 25.
         minSdk = 25
         targetSdk = 34
-        versionCode = 2
-        versionName = "0.2"
+        versionCode = version.getProperty("VERSION_CODE").toInt()
+        versionName = version.getProperty("VERSION_NAME")
+    }
+
+    signingConfigs {
+        create("release") {
+            if (keystore.isNotEmpty()) {
+                storeFile = file(keystore.getProperty("storeFile"))
+                storePassword = keystore.getProperty("storePassword")
+                keyAlias = keystore.getProperty("keyAlias")
+                keyPassword = keystore.getProperty("keyPassword")
+            }
+        }
     }
 
     buildTypes {
         release {
             isMinifyEnabled = false
+            signingConfig = if (keystore.isNotEmpty()) signingConfigs.getByName("release") else signingConfigs.getByName("debug")
         }
+    }
+    buildFeatures {
+        buildConfig = true
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17

@@ -15,7 +15,6 @@
         <item name="colorControlNormal">@color/muted</item>
     </style>
 
-    <!-- Shortcut target: no window at all, the activity only sends the command and finishes. -->
     <style name="Theme.SourcesSwitcher.Invisible" parent="Theme.AppCompat.NoActionBar">
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowBackground">@android:color/transparent</item>
@@ -23,7 +22,6 @@
         <item name="android:windowAnimationStyle">@null</item>
     </style>
 
-    <!-- Type scale: condensed display face for names and badges, regular sans for prose. -->
     <style name="Text.Eyebrow" parent="">
         <item name="android:fontFamily">sans-serif-condensed</item>
         <item name="android:textSize">13sp</item>

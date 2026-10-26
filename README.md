@@ -57,14 +57,16 @@ for those two operations plus installing the small per-input shortcut packages.
 
 ## Install
 
-Build the APK (see the developer notes below) or take a release build, then:
+Download `SwitchInput-<version>.apk` from the [releases](../../releases) (or build it, see
+the developer notes), then:
 
 ```bash
 adb connect <fire-tv-ip>:5555
-adb install -r app-debug.apk
+adb install -r SwitchInput-1.0.0.apk
 ```
 
-Magisk asks for root the first time the app runs; grant it.
+Magisk asks for root the first time the app runs; grant it. Updates install over the
+previous version with the same command and keep your shortcuts.
 
 ## Use
 

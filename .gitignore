@@ -19,3 +19,11 @@ re/jadx/
 diag/logcat_*.txt
 # Per-input stub APKs built by tools/build_stubs.py
 app/src/main/assets/stubs/
+# Signing material and device dumps never go to git
+keystore.properties
+*.jks
+*.keystore
+re/data/
+diag/*.txt
+# Release artifacts
+dist/
