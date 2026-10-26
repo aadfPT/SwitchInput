@@ -4,8 +4,12 @@
     <string name="not_configured">No input configured yet. Opening setup…</string>
     <string name="switching_to">Switching to %1$s…</string>
     <string name="switch_failed">Switch failed: %1$s</string>
+    <string name="sent">Switch command sent to Fire TV Equipment Control.</string>
     <string name="loading">Reading inputs from Fire TV…</string>
     <string name="no_root">Root (su) is required to read the Fire TV equipment list.</string>
+    <string name="pick_one">Select the input the launcher tile should switch to.</string>
+    <string name="current_choice">Current choice: %1$s. Select another to change it.</string>
     <string name="saved">Saved. The launcher tile will now switch to %1$s.</string>
     <string name="test_now">Test now</string>
+    <string name="test_now_x">Test now: %1$s</string>
 </resources>
