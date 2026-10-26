@@ -139,10 +139,6 @@ class MainActivity : AppCompatActivity() {
             bindPill(h, row)
             h.card.setOnClickListener { onToggle(row) }
             h.card.setOnLongClickListener { onTry(row); true }
-            h.card.setOnFocusChangeListener { v, focused ->
-                val scale = if (focused) 1.03f else 1f
-                v.animate().scaleX(scale).scaleY(scale).setDuration(120).start()
-            }
             h.card.alpha = if (row.supported) 1f else 0.45f
             h.card.contentDescription = row.input.label + ", " + ctx.getString(if (row.enabled) R.string.pill_on else R.string.pill_off)
         }

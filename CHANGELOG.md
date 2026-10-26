@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.0.1 – 2026-10-27
+
+- Shortcuts installed earlier are shown as added again after reopening the app
+  (Android 11 package visibility: the app now declares which packages it looks for).
+- Vertical scrollbar on the input list.
+- Focused card no longer grows past the edges of the list.
+
 ## 1.0.0 – 2026-10-27
 
 First release.

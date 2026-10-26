@@ -103,5 +103,13 @@
         android:layout_weight="0.64"
         android:clipToPadding="false"
         android:paddingTop="4dp"
-        android:paddingBottom="4dp" />
+        android:paddingBottom="4dp"
+        android:paddingEnd="18dp"
+        android:paddingStart="0dp"
+        android:scrollbars="vertical"
+        android:scrollbarStyle="outsideOverlay"
+        android:fadeScrollbars="false"
+        android:scrollbarSize="6dp"
+        android:scrollbarThumbVertical="@drawable/scrollbar_thumb"
+        android:scrollbarTrackVertical="@drawable/scrollbar_track" />
 </LinearLayout>
