@@ -26,6 +26,12 @@ class MainActivity : AppCompatActivity() {
         status = findViewById(R.id.status)
         grid = findViewById(R.id.grid)
         grid.layoutManager = GridLayoutManager(this, 2)
+    }
+
+    /** Re-read the equipment list every time the screen comes to the front, so equipment
+     *  added in Fire TV Settings while this app sat in the background shows up at once. */
+    override fun onStart() {
+        super.onStart()
         load()
     }
 
@@ -97,7 +103,7 @@ class MainActivity : AppCompatActivity() {
             h.badgeSmall.text = small
             h.badgeSmall.visibility = if (small.isEmpty()) View.GONE else View.VISIBLE
             h.badge.text = big
-            h.badge.textSize = if (big.length <= 2) 26f else if (big.length <= 4) 18f else 14f
+            h.badge.textSize = if (big.length <= 2) 24f else if (big.length <= 4) 16f else 13f
             h.label.text = row.input.label
             // Second line: what the switch blasts when that adds information (PlayStation -> HDMI 2,
             // Fire TV -> Power on + HDMI 3); otherwise the voice command the shortcut replaces.
