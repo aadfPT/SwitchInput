@@ -52,7 +52,6 @@ class ConfigActivity : AppCompatActivity() {
         list.adapter = Adapter(cfg.inputs, prefs.inputType) { input ->
             prefs.save(input, cfg)
             status.text = getString(R.string.saved, input.label)
-            list.adapter?.notifyDataSetChanged()
             refreshTestButton()
         }
         list.requestFocus()
@@ -89,7 +88,15 @@ class ConfigActivity : AppCompatActivity() {
             val mark = if (it.type == selectedType) "✔  " else "     "
             val fn = if (it.functions.isEmpty()) "" else "   (" + it.functions.joinToString(" + ") + ")"
             h.label.text = mark + it.label + fn
-            h.label.setOnClickListener { _ -> selectedType = it.type; onPick(it) }
+            h.label.setOnClickListener { _ ->
+                // Rebind only the rows whose check mark changes: a full notifyDataSetChanged()
+                // would recreate the views and throw D-pad focus back to the first row.
+                val old = items.indexOfFirst { i -> i.type == selectedType }
+                selectedType = it.type
+                if (old >= 0) notifyItemChanged(old)
+                notifyItemChanged(pos)
+                onPick(it)
+            }
         }
     }
 }
