@@ -18,7 +18,7 @@
     <string name="switch_failed">Switch failed: %1$s</string>
     <string name="pill_on">Added</string>
     <string name="pill_off">Add</string>
-    <string name="voice_phrase">“Alexa, change to %1$s”</string>
+    <string name="voice_phrase">“Change to %1$s”</string>
     <string name="unknown_input">This input type is not supported by the app.</string>
     <string name="cd_badge">Input badge</string>
 </resources>
