@@ -28,7 +28,7 @@ directive and finishes, so the launcher stays on screen.
 .\tools\deploy.ps1          # gradle assembleDebug + adb install -r + open the app
 .\tools\deploy.ps1 -NoLaunch
 python -I tools\gen_inputs.py   # only after editing the type list / palette in the script
-python -I toolsuild_stubs.py  # deploy.ps1 runs this; needs build-tools 34 + ~/.android/debug.keystore
+python -I tools/build_stubs.py  # deploy.ps1 runs this; needs build-tools 34 + ~/.android/debug.keystore
 ```
 `tools/env.ps1` puts the JDK/SDK on PATH, `tools/fire.ps1` wraps adb for 192.168.1.141:5555.
 Reinstalling with `-r` keeps the enabled shortcuts and Magisk's root grant.
