@@ -47,7 +47,9 @@ class InputRepository(private val ctx: Context) {
                         val act = pair.optJSONObject(1)?.optJSONArray("activate") ?: continue
                         for (k in 0 until act.length()) functions.add(act.getString(k))
                     }
-                    inputs.add(Input(id, type, name ?: prettify(type), functions))
+                    // STARK is DCS's internal name for the Fire TV itself.
+                    val label = if (type == "STARK") "Fire TV (this stick)" else name ?: prettify(type)
+                    inputs.add(Input(id, type, label, functions))
                 }
             }
 
