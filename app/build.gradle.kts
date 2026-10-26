@@ -12,8 +12,8 @@ android {
         // Fire OS 8 (this stick) is API 30; Fire OS 7 is 28, Fire OS 6 is 25.
         minSdk = 25
         targetSdk = 34
-        versionCode = 1
-        versionName = "0.1"
+        versionCode = 2
+        versionName = "0.2"
     }
 
     buildTypes {

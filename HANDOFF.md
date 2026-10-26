@@ -2,20 +2,24 @@
 
 ## Status (2026-10-26, evening)
 Working and installed on the stick (192.168.1.141:5555, Fire OS 8.1.8.0, Magisk 30.7).
-Second iteration: the app is now a picker that enables one launcher shortcut (activity-alias)
-per input; each shortcut switches and closes itself. See README.md for usage and
+Third iteration: the app is a picker that installs one tiny stub *package* per input
+(`pt.aadf.sourcesswitcher.input.<type>`, built by tools/build_stubs.py, shipped in assets);
+Projectivy shows one card per package, so these are the only way to get one TV app per input.
+Each stub forwards to SwitchActivity, which switches and closes. See README.md for usage and
 re/NOTES.md for the reverse-engineering details.
 
-Verified on the device through logcat (`OZ-DCS:NativeDirectiveServiceHandler ...
-Directive handling complete, success : true`) and `cmd package query-activities`:
-- toggling a card enables/disables its alias, which then is/isn't listed as a
-  LEANBACK_LAUNCHER entry,
-- `am start -n pt.aadf.sourcesswitcher/.Shortcut_STARK` switches and leaves Projectivy
-  as the resumed activity,
+Verified on the device:
+- toggling a card runs `pm install` / `pm uninstall` of the stub as root (logcat INSTALL_EVENT
+  SUCCESS), and Projectivy's All apps > TV Apps lists the stub ("Fire TV") with its banner
+  (diag/projectivy_allapps.png),
+- launching the stub (`am start -n pt.aadf.sourcesswitcher.input.stark/pt.aadf.sourcesswitcher.stub.Trampoline`)
+  logs `Directive handling complete, success : true` and leaves Projectivy resumed, even with
+  the picker still in the back stack (SwitchActivity has taskAffinity="" and the stub starts it
+  without NEW_TASK),
 - the main screen renders as designed (diag/main_screen.png).
 
-All shortcuts were disabled again after testing, so the launcher only shows "Switch Input"
-until the user adds some. Magisk already holds an allow policy for the app (uid 10245),
+The test stub was uninstalled again, so the launcher only shows "Switch Input" until the
+user adds some. The earlier activity-alias approach is gone (aliases never showed in Projectivy). Magisk already holds an allow policy for the app (uid 10245),
 which survives `adb install -r`.
 
 ## What was tried and rejected

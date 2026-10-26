@@ -10,7 +10,11 @@ $root = Split-Path -Parent $PSScriptRoot
 
 if (-not $SkipBuild) {
     Push-Location $root
-    try { & .\gradlew.bat assembleDebug --no-daemon -q; if ($LASTEXITCODE -ne 0) { throw "gradle failed ($LASTEXITCODE)" } }
+    try {
+        # Per-input stub APKs (assets/stubs) are build output: rebuild them before the app.
+        & python -I tools\build_stubs.py; if ($LASTEXITCODE -ne 0) { throw "build_stubs failed ($LASTEXITCODE)" }
+        & .\gradlew.bat assembleDebug --no-daemon -q; if ($LASTEXITCODE -ne 0) { throw "gradle failed ($LASTEXITCODE)" }
+    }
     finally { Pop-Location }
 }
 $apk = Join-Path $root "app\build\outputs\apk\debug\app-debug.apk"

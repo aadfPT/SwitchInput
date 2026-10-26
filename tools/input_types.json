@@ -1,0 +1,246 @@
+{
+ "versionCode": 2,
+ "versionName": "0.2",
+ "types": [
+  {
+   "type": "STARK",
+   "label": "Fire TV",
+   "short": "FTV"
+  },
+  {
+   "type": "HDMI_1",
+   "label": "HDMI 1",
+   "short": "1"
+  },
+  {
+   "type": "HDMI_2",
+   "label": "HDMI 2",
+   "short": "2"
+  },
+  {
+   "type": "HDMI_3",
+   "label": "HDMI 3",
+   "short": "3"
+  },
+  {
+   "type": "HDMI_4",
+   "label": "HDMI 4",
+   "short": "4"
+  },
+  {
+   "type": "COAX",
+   "label": "Coax",
+   "short": "COAX"
+  },
+  {
+   "type": "ANTENA",
+   "label": "Antenna",
+   "short": "ANT"
+  },
+  {
+   "type": "CABLE",
+   "label": "Cable",
+   "short": "CAB"
+  },
+  {
+   "type": "COMPOSITE",
+   "label": "Composite",
+   "short": "AV"
+  },
+  {
+   "type": "COMPONENT",
+   "label": "Component",
+   "short": "YPbPr"
+  },
+  {
+   "type": "GAME_CONSOLE",
+   "label": "Game Console",
+   "short": "GAME"
+  },
+  {
+   "type": "DVD_PLAYER",
+   "label": "DVD Player",
+   "short": "DVD"
+  },
+  {
+   "type": "BLU_RAY",
+   "label": "Blu-ray",
+   "short": "BD"
+  },
+  {
+   "type": "CABLE_TV",
+   "label": "Cable TV",
+   "short": "CATV"
+  },
+  {
+   "type": "SATELLITE",
+   "label": "Satellite",
+   "short": "SAT"
+  },
+  {
+   "type": "DVR",
+   "label": "DVR",
+   "short": "DVR"
+  },
+  {
+   "type": "MEDIA_PLAYER",
+   "label": "Media Player",
+   "short": "MP"
+  },
+  {
+   "type": "APPLE_TV",
+   "label": "Apple TV",
+   "short": "ATV"
+  },
+  {
+   "type": "PLAY_STATION",
+   "label": "PlayStation",
+   "short": "PS"
+  },
+  {
+   "type": "PLAY_STATION_2",
+   "label": "PlayStation 2",
+   "short": "PS2"
+  },
+  {
+   "type": "PLAY_STATION_3",
+   "label": "PlayStation 3",
+   "short": "PS3"
+  },
+  {
+   "type": "PLAY_STATION_4",
+   "label": "PlayStation 4",
+   "short": "PS4"
+  },
+  {
+   "type": "ROKU",
+   "label": "Roku",
+   "short": "ROKU"
+  },
+  {
+   "type": "XBOX",
+   "label": "Xbox",
+   "short": "XBOX"
+  },
+  {
+   "type": "XBOX_ONE",
+   "label": "Xbox One",
+   "short": "XB1"
+  },
+  {
+   "type": "XBOX_360",
+   "label": "Xbox 360",
+   "short": "X360"
+  },
+  {
+   "type": "WII",
+   "label": "Nintendo Wii",
+   "short": "WII"
+  },
+  {
+   "type": "WII_U",
+   "label": "Nintendo Wii U",
+   "short": "WIIU"
+  },
+  {
+   "type": "GAME_CUBE",
+   "label": "GameCube",
+   "short": "GC"
+  },
+  {
+   "type": "TIVO",
+   "label": "TiVo",
+   "short": "TIVO"
+  },
+  {
+   "type": "BS",
+   "label": "BS",
+   "short": "BS"
+  },
+  {
+   "type": "CS",
+   "label": "CS",
+   "short": "CS"
+  },
+  {
+   "type": "BS4K",
+   "label": "BS4K",
+   "short": "BS4K"
+  },
+  {
+   "type": "BLUETOOTH",
+   "label": "Bluetooth",
+   "short": "BT"
+  },
+  {
+   "type": "OPTICAL",
+   "label": "Optical",
+   "short": "OPT"
+  },
+  {
+   "type": "CS4K",
+   "label": "CS4K",
+   "short": "CS4K"
+  },
+  {
+   "type": "VGA",
+   "label": "VGA",
+   "short": "VGA"
+  },
+  {
+   "type": "RECORDING_LIST",
+   "label": "Recording List",
+   "short": "REC"
+  },
+  {
+   "type": "ARC",
+   "label": "HDMI ARC",
+   "short": "ARC"
+  },
+  {
+   "type": "NINTENDO_SWITCH",
+   "label": "Nintendo Switch",
+   "short": "NSW"
+  },
+  {
+   "type": "CHROMECAST",
+   "label": "Chromecast",
+   "short": "CC"
+  },
+  {
+   "type": "FOUR_K",
+   "label": "4K",
+   "short": "4K"
+  },
+  {
+   "type": "HDMI",
+   "label": "HDMI",
+   "short": "HDMI"
+  },
+  {
+   "type": "DVB_S",
+   "label": "DVB-S",
+   "short": "DVB-S"
+  },
+  {
+   "type": "DVB_C",
+   "label": "DVB-C",
+   "short": "DVB-C"
+  },
+  {
+   "type": "DVB_T",
+   "label": "DVB-T",
+   "short": "DVB-T"
+  },
+  {
+   "type": "SAT_IP",
+   "label": "SAT>IP",
+   "short": "SAT"
+  },
+  {
+   "type": "DLNA_SOURCE",
+   "label": "DLNA",
+   "short": "DLNA"
+  }
+ ]
+}

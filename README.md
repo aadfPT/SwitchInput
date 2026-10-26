@@ -12,18 +12,23 @@ app closes itself so the launcher is back on screen.
 TV endpoint. The input list, the TV endpoint id and the device id are read from DCS's own
 SQLite database. Details: [re/NOTES.md](re/NOTES.md).
 
-Launcher shortcuts are `activity-alias` entries, one per input type Fire TV knows
-(48, from DCS's `Definitions.ActivityType`), generated into the manifest by
-`tools/gen_inputs.py` together with their labels and banner/icon PNGs. They start disabled;
-the main screen enables the ones you pick with `PackageManager.setComponentEnabledSetting`,
-which is what makes them appear or disappear in launchers. Every alias targets
-`SwitchActivity`, a windowless activity that sends the directive and finishes.
+Launcher shortcuts are separate tiny packages, one per input type Fire TV knows
+(48, from DCS's `Definitions.ActivityType`): Projectivy and the Fire TV launcher show one
+card per *package*, so activity-aliases inside the main app never show up as their own TV
+apps. `tools/gen_inputs.py` generates labels and banner/icon PNGs; `tools/build_stubs.py`
+builds a ~20 KB APK per type (shared `tools/stub/Trampoline.java`, own package name
+`pt.aadf.sourcesswitcher.input.<type>`, label, banner, and a meta-data entry naming the
+input) and drops them in `app/src/main/assets/stubs`. Adding a shortcut on the main screen
+installs the stub as root (`pm install`), removing it uninstalls the package. A stub's only
+activity forwards the input to the main app's windowless `SwitchActivity`, which sends the
+directive and finishes, so the launcher stays on screen.
 
 ## Build / deploy (Windows, scoop toolchain)
 ```powershell
 .\tools\deploy.ps1          # gradle assembleDebug + adb install -r + open the app
 .\tools\deploy.ps1 -NoLaunch
 python -I tools\gen_inputs.py   # only after editing the type list / palette in the script
+python -I toolsuild_stubs.py  # deploy.ps1 runs this; needs build-tools 34 + ~/.android/debug.keystore
 ```
 `tools/env.ps1` puts the JDK/SDK on PATH, `tools/fire.ps1` wraps adb for 192.168.1.141:5555.
 Reinstalling with `-r` keeps the enabled shortcuts and Magisk's root grant.
@@ -31,15 +36,16 @@ Reinstalling with `-r` keeps the enabled shortcuts and Magisk's root grant.
 ## On the stick
 - **Switch Input** (the app): a card per input. Select = add/remove its launcher shortcut,
   hold = switch to it now. The left column shows how many shortcuts are on the launcher.
-- Each shortcut (HDMI 1, PlayStation, Fire TV, …) is a normal launcher entry with its own
-  banner. Open it: toast "Switching to …", TV changes input, app is gone.
-- Projectivy caches app banners; if a shortcut shows an old image, clear Projectivy's cache
-  or re-add the shortcut.
+- Each shortcut (HDMI 1, PlayStation, Fire TV, …) is a normal TV app in the launcher with its
+  own banner. Open it: toast "Switching to …", TV changes input, app is gone.
+- Uninstalling the main app leaves installed stubs behind; remove them from the main screen
+  first, or `pm uninstall pt.aadf.sourcesswitcher.input.<type>`.
 
 ## Layout
 - `app/` – Kotlin app (`Switcher`, `InputRepository`, `Root`, `Shortcuts`, `MainActivity`,
-  `SwitchActivity`); `res/values/input_types.xml`, `res/drawable-xhdpi/*` and the alias block
-  of the manifest are generated
-- `tools/` – env / adb helpers, deploy script, generator, the old probe batch
+  `SwitchActivity`); `res/values/input_types.xml`, `res/drawable-xhdpi/*` are generated and
+  `assets/stubs/` is build output (git-ignored)
+- `tools/` – env / adb helpers, deploy script, generators (`gen_inputs.py`, `build_stubs.py`,
+  `stub/Trampoline.java`), the old probe batch
 - `re/` – notes; `re/apk`, `re/jadx`, pulled DB copies are git-ignored
 - `diag/` – package dumps and screenshots captured during investigation

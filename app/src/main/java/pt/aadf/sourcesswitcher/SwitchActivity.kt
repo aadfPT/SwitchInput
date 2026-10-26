@@ -7,22 +7,21 @@ import android.os.Looper
 import android.widget.Toast
 
 /**
- * Target of every launcher shortcut alias. It has no window (Theme.SourcesSwitcher.Invisible):
- * it works out which input its alias stands for, sends the switch and finishes immediately,
- * so the launcher that started it is back on screen while the TV changes input.
+ * Started by the per-input stub packages with an "input" extra (the Fire TV activity type).
+ * It has no window (Theme.SourcesSwitcher.Invisible): it sends the switch and finishes
+ * immediately, so the launcher that started the stub is back on screen while the TV changes input.
  */
 class SwitchActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val app = applicationContext
-        val type = Shortcuts.typeFromComponent(intent.component)
-        val label = type?.let { t -> labelFor(t) } ?: type
+        val type = intent?.getStringExtra("input")?.takeIf { it.isNotBlank() }
         if (type == null) {
             Toast.makeText(app, R.string.unknown_input, Toast.LENGTH_SHORT).show()
             finish()
             return
         }
-        Toast.makeText(app, getString(R.string.switching_to, label), Toast.LENGTH_SHORT).show()
+        Toast.makeText(app, getString(R.string.switching_to, labelFor(type) ?: type), Toast.LENGTH_SHORT).show()
         Thread {
             val err = try {
                 val prefs = Prefs(app)

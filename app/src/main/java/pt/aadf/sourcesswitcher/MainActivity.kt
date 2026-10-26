@@ -56,10 +56,25 @@ class MainActivity : AppCompatActivity() {
                 if (!row.supported) {
                     status.setText(R.string.unknown_input); return@Adapter
                 }
-                row.enabled = !row.enabled
-                Shortcuts.setEnabled(this, row.input.type, row.enabled)
-                status.text = getString(if (row.enabled) R.string.added else R.string.removed, row.input.label)
-                main.postDelayed({ updateCount(items) }, 2500)
+                if (row.busy) return@Adapter
+                val on = !row.enabled
+                row.busy = true
+                status.text = getString(if (on) R.string.adding else R.string.removing, row.input.label)
+                Thread {
+                    // Installing / uninstalling the stub package takes a second or two.
+                    val err = try { Shortcuts.setEnabled(this, row.input.type, on) } catch (e: Exception) { e.toString() }
+                    main.post {
+                        row.busy = false
+                        if (err == null) {
+                            row.enabled = on
+                            status.text = getString(if (on) R.string.added else R.string.removed, row.input.label)
+                            main.postDelayed({ updateCount(items) }, 2500)
+                        } else {
+                            status.text = getString(R.string.shortcut_failed, err)
+                        }
+                        grid.adapter?.notifyItemChanged(items.indexOf(row))
+                    }
+                }.start()
             },
             onTry = { row ->
                 status.text = getString(R.string.switching_to, row.input.label)
@@ -77,7 +92,7 @@ class MainActivity : AppCompatActivity() {
         status.text = if (n == 0) getString(R.string.status_count_none) else resources.getQuantityString(R.plurals.status_count, n, n)
     }
 
-    class Row(val input: InputRepository.Input, val supported: Boolean, var enabled: Boolean)
+    class Row(val input: InputRepository.Input, val supported: Boolean, var enabled: Boolean, var busy: Boolean = false)
 
     private class Adapter(val items: List<Row>, val onToggle: (Row) -> Unit, val onTry: (Row) -> Unit) :
         RecyclerView.Adapter<Adapter.VH>() {
@@ -112,7 +127,7 @@ class MainActivity : AppCompatActivity() {
                 ctx.getString(R.string.voice_phrase, row.input.label)
             else fns.joinToString(" + ") { pretty(it) }
             bindPill(h, row)
-            h.card.setOnClickListener { onToggle(row); bindPill(h, row) }
+            h.card.setOnClickListener { onToggle(row) }
             h.card.setOnLongClickListener { onTry(row); true }
             h.card.setOnFocusChangeListener { v, focused ->
                 v.animate().scaleX(if (focused) 1.03f else 1f).scaleY(if (focused) 1.03f else 1f).setDuration(120).start()
@@ -123,9 +138,9 @@ class MainActivity : AppCompatActivity() {
 
         private fun bindPill(h: VH, row: Row) {
             val ctx = h.itemView.context
-            h.pill.setText(if (row.enabled) R.string.pill_on else R.string.pill_off)
-            h.pill.setBackgroundResource(if (row.enabled) R.drawable.pill_on else R.drawable.pill_off)
-            h.pill.setTextColor(ctx.getColor(if (row.enabled) R.color.accent_fg else R.color.muted))
+            h.pill.setText(if (row.busy) R.string.pill_busy else if (row.enabled) R.string.pill_on else R.string.pill_off)
+            h.pill.setBackgroundResource(if (row.enabled && !row.busy) R.drawable.pill_on else R.drawable.pill_off)
+            h.pill.setTextColor(ctx.getColor(if (row.enabled && !row.busy) R.color.accent_fg else R.color.muted))
         }
 
         /** Badge text: ("HDMI", "2") for HDMI inputs, ("", short code) otherwise. */

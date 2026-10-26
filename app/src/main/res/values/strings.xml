@@ -12,6 +12,10 @@
         <item quantity="one">%1$d shortcut in the launcher</item>
         <item quantity="other">%1$d shortcuts in the launcher</item>
     </plurals>
+    <string name="adding">Adding %1$s to the launcher…</string>
+    <string name="removing">Removing %1$s from the launcher…</string>
+    <string name="shortcut_failed">Could not change the shortcut: %1$s</string>
+    <string name="pill_busy">Wait…</string>
     <string name="added">Added %1$s to the launcher.</string>
     <string name="removed">Removed %1$s from the launcher.</string>
     <string name="switching_to">Switching to %1$s…</string>

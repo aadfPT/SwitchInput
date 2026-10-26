@@ -17,3 +17,5 @@ re/apk/
 re/jadx/
 # Diagnostics are kept, but raw logcat dumps can be huge
 diag/logcat_*.txt
+# Per-input stub APKs built by tools/build_stubs.py
+app/src/main/assets/stubs/
