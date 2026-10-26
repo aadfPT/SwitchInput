@@ -1,51 +1,61 @@
-# SourcesSwitcher – TV inputs as launcher apps
+# Switch Input for Fire TV
 
-Fire OS app for a rooted Fire TV Stick. It turns each input configured under
-Settings > Equipment Control into its own app in the launcher (Projectivy, Fire TV home, …).
-Opening one does what "Alexa, change to HDMI 2" does, without the voice round trip, and the
-app closes itself so the launcher is back on screen.
+Turn each TV input configured in Fire TV's **Equipment Control** into its own app in the
+launcher. Open "PlayStation" and the TV switches to HDMI 2, exactly as if you had said
+"Alexa, change to PlayStation", but without talking to the remote. The app closes itself,
+so you are straight back in your launcher.
 
-## How it works
-`com.amazon.tv.devicecontrol` (DCS) receives Alexa's cloud directives as a broadcast
-(`com.amazon.speech.SmartCloud_Request`). The app injects the same broadcast as root
-(`su -mm -c am broadcast …`) with an `Alexa.InputController / SelectInput` directive for the
-TV endpoint. The input list, the TV endpoint id and the device id are read from DCS's own
-SQLite database. Details: [re/NOTES.md](re/NOTES.md).
+![The Switch Input picker](docs/screenshots/picker.png)
 
-Launcher shortcuts are separate tiny packages, one per input type Fire TV knows
-(48, from DCS's `Definitions.ActivityType`): Projectivy and the Fire TV launcher show one
-card per *package*, so activity-aliases inside the main app never show up as their own TV
-apps. `tools/gen_inputs.py` generates labels and banner/icon PNGs; `tools/build_stubs.py`
-builds a ~20 KB APK per type (shared `tools/stub/Trampoline.java`, own package name
-`pt.aadf.sourcesswitcher.input.<type>`, label, banner, and a meta-data entry naming the
-input) and drops them in `app/src/main/assets/stubs`. Adding a shortcut on the main screen
-installs the stub as root (`pm install`), removing it uninstalls the package. A stub's only
-activity forwards the input to the main app's windowless `SwitchActivity`, which sends the
-directive and finishes, so the launcher stays on screen.
+## What you get
 
-## Build / deploy (Windows, scoop toolchain)
-```powershell
-.\tools\deploy.ps1          # gradle assembleDebug + adb install -r + open the app
-.\tools\deploy.ps1 -NoLaunch
-python -I tools\gen_inputs.py   # only after editing the type list / palette in the script
-python -I tools/build_stubs.py  # deploy.ps1 runs this; needs build-tools 34 + ~/.android/debug.keystore
+- **One app per input.** HDMI 1–4, antenna, and any equipment you added in Fire TV
+  Settings (PlayStation, Nintendo Switch, …) each become a normal TV app with a banner.
+- **Works with any launcher.** Projectivy, the stock Fire TV home, or anything that lists
+  TV apps.
+- **No cloud round trip.** The switch is handled on the stick by Fire TV's own Equipment
+  Control engine, through the same path Alexa uses.
+
+![Launcher banners for HDMI 1, PlayStation, Nintendo Switch and Fire TV](docs/screenshots/banners.png)
+
+## Requirements
+
+- A Fire TV Stick with **root** (Magisk). Tested on a Fire TV Stick 4K Max, Fire OS 8.1.
+- **Equipment Control** set up in Fire TV Settings, so "Alexa, change to …" already works.
+- ADB access to the stick, to install the app once.
+
+## Install
+
+Build the APK (see the developer notes below) or take a release build, then:
+
+```bash
+adb connect <fire-tv-ip>:5555
+adb install -r app-debug.apk
 ```
-`tools/env.ps1` puts the JDK/SDK on PATH, `tools/fire.ps1` wraps adb for 192.168.1.141:5555.
-Reinstalling with `-r` keeps the enabled shortcuts and Magisk's root grant.
 
-## On the stick
-- **Switch Input** (the app): a card per input. Select = add/remove its launcher shortcut,
-  hold = switch to it now. The left column shows how many shortcuts are on the launcher.
-- Each shortcut (HDMI 1, PlayStation, Fire TV, …) is a normal TV app in the launcher with its
-  own banner. Open it: toast "Switching to …", TV changes input, app is gone.
-- Uninstalling the main app leaves installed stubs behind; remove them from the main screen
-  first, or `pm uninstall pt.aadf.sourcesswitcher.input.<type>`.
+Magisk asks for root the first time the app runs; grant it.
 
-## Layout
-- `app/` – Kotlin app (`Switcher`, `InputRepository`, `Root`, `Shortcuts`, `MainActivity`,
-  `SwitchActivity`); `res/values/input_types.xml`, `res/drawable-xhdpi/*` are generated and
-  `assets/stubs/` is build output (git-ignored)
-- `tools/` – env / adb helpers, deploy script, generators (`gen_inputs.py`, `build_stubs.py`,
-  `stub/Trampoline.java`), the old probe batch
-- `re/` – notes; `re/apk`, `re/jadx`, pulled DB copies are git-ignored
-- `diag/` – package dumps and screenshots captured during investigation
+## Use
+
+1. Open **Switch Input** from your launcher. It lists every input Fire TV knows about.
+2. **Select** an input to add it to the launcher; select again to remove it.
+3. **Hold** Select on an input to switch to it right away.
+
+Added inputs show up next to your other TV apps:
+
+<img src="docs/screenshots/projectivy-tv-apps.png" width="320" alt="Projectivy's TV Apps list with a Fire TV shortcut">
+
+Open one and the TV switches input while a short "Switching to …" toast shows; the app
+closes by itself. New equipment added in Fire TV Settings appears in the list the next time
+you open Switch Input.
+
+## Good to know
+
+- Each shortcut is a tiny separate package. Uninstalling Switch Input does not remove
+  shortcuts you added; remove them from the picker first.
+- Everything runs locally on the stick. Nothing is sent anywhere.
+
+## For developers
+
+How it works, how to build and deploy, and what was found inside Fire OS to make this
+possible: see [DEVELOPMENT.md](DEVELOPMENT.md).
