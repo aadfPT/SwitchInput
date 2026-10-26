@@ -7,8 +7,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 /**
@@ -21,11 +22,28 @@ class MainActivity : AppCompatActivity() {
     private val main = Handler(Looper.getMainLooper())
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        AppLocale.restore(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         status = findViewById(R.id.status)
         grid = findViewById(R.id.grid)
-        grid.layoutManager = GridLayoutManager(this, 2)
+        grid.layoutManager = LinearLayoutManager(this)  // one full-width row per input
+        val language = findViewById<TextView>(R.id.language)
+        language.text = getString(R.string.language_value, AppLocale.displayName(this, AppLocale.current(this)))
+        language.setOnClickListener { chooseLanguage() }
+    }
+
+    private fun chooseLanguage() {
+        val current = AppLocale.current(this)
+        val names = AppLocale.CHOICES.map { AppLocale.displayName(this, it) }.toTypedArray()
+        AlertDialog.Builder(this, R.style.Theme_SourcesSwitcher_Dialog)
+            .setTitle(R.string.language_choose)
+            .setSingleChoiceItems(names, AppLocale.CHOICES.indexOf(current)) { dialog, which ->
+                dialog.dismiss()
+                val tag = AppLocale.CHOICES[which]
+                if (tag != current) AppLocale.apply(this, tag)  // AppCompat recreates the activity
+            }
+            .show()
     }
 
     /** Re-read the equipment list every time the screen comes to the front, so equipment

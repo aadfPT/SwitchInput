@@ -1,7 +1,10 @@
 <resources>
-    <string name="app_name">Switch Input</string>
+    <!-- Context for translators: "input" = a TV input (HDMI 1, PlayStation…); "switch to" = change
+         the TV to that input (never "Nintendo Switch"); "launcher" = the Fire TV home screen app;
+         "shortcut" = the small app added to the launcher for one input. -->
+    <string name="app_name" translatable="false">Switch Input</string>
     <string name="eyebrow">Fire TV · Equipment Control</string>
-    <string name="title">Switch Input</string>
+    <string name="title" translatable="false">Switch Input</string>
     <string name="intro">Each input you add becomes its own app in the launcher. Open it and the TV changes input; the app closes by itself.</string>
     <string name="legend_select">Select: add or remove the shortcut</string>
     <string name="legend_long">Hold: switch to it now</string>
@@ -22,7 +25,12 @@
     <string name="switch_failed">Switch failed: %1$s</string>
     <string name="pill_on">Added</string>
     <string name="pill_off">Add</string>
+    <!-- The Alexa voice command this shortcut replaces, in the phrasing Alexa expects in this language. -->
     <string name="voice_phrase">“Change to %1$s”</string>
     <string name="unknown_input">This input type is not supported by the app.</string>
     <string name="cd_badge">Input badge</string>
+    <string name="language">Language</string>
+    <string name="language_value">Language: %1$s</string>
+    <string name="language_system">System language</string>
+    <string name="language_choose">Choose language</string>
 </resources>

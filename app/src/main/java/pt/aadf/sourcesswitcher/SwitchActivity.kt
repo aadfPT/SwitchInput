@@ -14,14 +14,15 @@ import android.widget.Toast
 class SwitchActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val app = applicationContext
+        // Toast texts follow the language chosen in the app, not only the system language.
+        val app = AppLocale.localized(applicationContext)
         val type = intent?.getStringExtra("input")?.takeIf { it.isNotBlank() }
         if (type == null) {
             Toast.makeText(app, R.string.unknown_input, Toast.LENGTH_SHORT).show()
             finish()
             return
         }
-        Toast.makeText(app, getString(R.string.switching_to, labelFor(type) ?: type), Toast.LENGTH_SHORT).show()
+        Toast.makeText(app, app.getString(R.string.switching_to, labelFor(app, type) ?: type), Toast.LENGTH_SHORT).show()
         Thread {
             val err = try {
                 val prefs = Prefs(app)
@@ -45,8 +46,8 @@ class SwitchActivity : Activity() {
         finish()
     }
 
-    private fun labelFor(type: String): String? {
-        val id = resources.getIdentifier("input_" + type.lowercase(), "string", packageName)
-        return if (id != 0) getString(id) else null
+    private fun labelFor(ctx: android.content.Context, type: String): String? {
+        val id = ctx.resources.getIdentifier("input_" + type.lowercase(), "string", packageName)
+        return if (id != 0) ctx.getString(id) else null
     }
 }

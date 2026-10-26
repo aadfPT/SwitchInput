@@ -1,0 +1,30 @@
+<resources>
+    <string name="eyebrow">Fire TV · उपकरण नियंत्रण</string>
+    <string name="intro">आप जो भी इनपुट जोड़ते हैं, वह लॉन्चर में अपना अलग ऐप बन जाता है। उसे खोलें, टीवी इनपुट बदल देता है और ऐप अपने आप बंद हो जाता है।</string>
+    <string name="legend_select">चुनें: शॉर्टकट जोड़ें या हटाएँ</string>
+    <string name="legend_long">दबाकर रखें: अभी इस इनपुट पर जाएँ</string>
+    <string name="loading">Fire TV से इनपुट पढ़े जा रहे हैं…</string>
+    <string name="no_root">Fire TV की उपकरण सूची पढ़ने के लिए रूट (su) ज़रूरी है।</string>
+    <string name="status_count_none">अभी कोई शॉर्टकट नहीं है। वे इनपुट चुनें जो आप इस्तेमाल करते हैं।</string>
+    <plurals name="status_count">
+        <item quantity="one">लॉन्चर में %1$d शॉर्टकट</item>
+        <item quantity="other">लॉन्चर में %1$d शॉर्टकट</item>
+    </plurals>
+    <string name="adding">%1$s को लॉन्चर में जोड़ा जा रहा है…</string>
+    <string name="removing">%1$s को लॉन्चर से हटाया जा रहा है…</string>
+    <string name="shortcut_failed">शॉर्टकट बदला नहीं जा सका: %1$s</string>
+    <string name="pill_busy">रुकें…</string>
+    <string name="added">%1$s लॉन्चर में जोड़ा गया।</string>
+    <string name="removed">%1$s लॉन्चर से हटाया गया।</string>
+    <string name="switching_to">%1$s पर जा रहे हैं…</string>
+    <string name="switch_failed">बदलना विफल रहा: %1$s</string>
+    <string name="pill_on">जोड़ा गया</string>
+    <string name="pill_off">जोड़ें</string>
+    <string name="voice_phrase">“%1$s पर स्विच करो”</string>
+    <string name="unknown_input">यह इनपुट प्रकार ऐप में समर्थित नहीं है।</string>
+    <string name="cd_badge">इनपुट बैज</string>
+    <string name="language">भाषा</string>
+    <string name="language_value">भाषा: %1$s</string>
+    <string name="language_system">सिस्टम की भाषा</string>
+    <string name="language_choose">भाषा चुनें</string>
+</resources>

@@ -1,0 +1,30 @@
+<resources>
+    <string name="eyebrow">Fire TV · Contrôle de l\'équipement</string>
+    <string name="intro">Chaque entrée ajoutée devient une application à part dans le lanceur. Ouvrez-la et le téléviseur change d\'entrée ; l\'application se ferme toute seule.</string>
+    <string name="legend_select">Sélectionner : ajouter ou retirer le raccourci</string>
+    <string name="legend_long">Maintenir : passer à cette entrée maintenant</string>
+    <string name="loading">Lecture des entrées du Fire TV…</string>
+    <string name="no_root">L\'accès root (su) est nécessaire pour lire la liste des équipements du Fire TV.</string>
+    <string name="status_count_none">Aucun raccourci pour l\'instant. Choisissez les entrées que vous utilisez.</string>
+    <plurals name="status_count">
+        <item quantity="one">%1$d raccourci dans le lanceur</item>
+        <item quantity="other">%1$d raccourcis dans le lanceur</item>
+    </plurals>
+    <string name="adding">Ajout de %1$s au lanceur…</string>
+    <string name="removing">Retrait de %1$s du lanceur…</string>
+    <string name="shortcut_failed">Impossible de modifier le raccourci : %1$s</string>
+    <string name="pill_busy">Patientez…</string>
+    <string name="added">%1$s ajouté au lanceur.</string>
+    <string name="removed">%1$s retiré du lanceur.</string>
+    <string name="switching_to">Passage à %1$s…</string>
+    <string name="switch_failed">Échec du changement : %1$s</string>
+    <string name="pill_on">Ajouté</string>
+    <string name="pill_off">Ajouter</string>
+    <string name="voice_phrase">« Passe sur %1$s »</string>
+    <string name="unknown_input">Ce type d\'entrée n\'est pas pris en charge par l\'application.</string>
+    <string name="cd_badge">Badge de l\'entrée</string>
+    <string name="language">Langue</string>
+    <string name="language_value">Langue : %1$s</string>
+    <string name="language_system">Langue du système</string>
+    <string name="language_choose">Choisir la langue</string>
+</resources>

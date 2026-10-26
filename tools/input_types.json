@@ -5,242 +5,389 @@
   {
    "type": "STARK",
    "label": "Fire TV",
-   "short": "FTV"
+   "short": "FTV",
+   "labels": {}
   },
   {
    "type": "HDMI_1",
    "label": "HDMI 1",
-   "short": "1"
+   "short": "1",
+   "labels": {}
   },
   {
    "type": "HDMI_2",
    "label": "HDMI 2",
-   "short": "2"
+   "short": "2",
+   "labels": {}
   },
   {
    "type": "HDMI_3",
    "label": "HDMI 3",
-   "short": "3"
+   "short": "3",
+   "labels": {}
   },
   {
    "type": "HDMI_4",
    "label": "HDMI 4",
-   "short": "4"
+   "short": "4",
+   "labels": {}
   },
   {
    "type": "COAX",
    "label": "Coax",
-   "short": "COAX"
+   "short": "COAX",
+   "labels": {}
   },
   {
    "type": "ANTENA",
    "label": "Antenna",
-   "short": "ANT"
+   "short": "ANT",
+   "labels": {
+    "de": "Antenne",
+    "es": "Antena",
+    "fr": "Antenne",
+    "it": "Antenna",
+    "ja": "\u30a2\u30f3\u30c6\u30ca",
+    "pt": "Antena",
+    "pt-rBR": "Antena",
+    "hi": "\u090f\u0902\u091f\u0940\u0928\u093e"
+   }
   },
   {
    "type": "CABLE",
    "label": "Cable",
-   "short": "CAB"
+   "short": "CAB",
+   "labels": {
+    "de": "Kabel",
+    "es": "Cable",
+    "fr": "C\u00e2ble",
+    "it": "Cavo",
+    "ja": "\u30b1\u30fc\u30d6\u30eb",
+    "pt": "Cabo",
+    "pt-rBR": "Cabo",
+    "hi": "\u0915\u0947\u092c\u0932"
+   }
   },
   {
    "type": "COMPOSITE",
    "label": "Composite",
-   "short": "AV"
+   "short": "AV",
+   "labels": {
+    "de": "Composite",
+    "es": "Compuesto",
+    "fr": "Composite",
+    "it": "Composito",
+    "ja": "\u30b3\u30f3\u30dd\u30b8\u30c3\u30c8",
+    "pt": "Composto",
+    "pt-rBR": "Composto",
+    "hi": "\u0915\u0902\u092a\u094b\u091c\u093c\u093f\u091f"
+   }
   },
   {
    "type": "COMPONENT",
    "label": "Component",
-   "short": "YPbPr"
+   "short": "YPbPr",
+   "labels": {
+    "de": "Component",
+    "es": "Componentes",
+    "fr": "Composantes",
+    "it": "Component",
+    "ja": "\u30b3\u30f3\u30dd\u30fc\u30cd\u30f3\u30c8",
+    "pt": "Componentes",
+    "pt-rBR": "Componente",
+    "hi": "\u0915\u0902\u092a\u094b\u0928\u0947\u0902\u091f"
+   }
   },
   {
    "type": "GAME_CONSOLE",
    "label": "Game Console",
-   "short": "GAME"
+   "short": "GAME",
+   "labels": {
+    "de": "Spielkonsole",
+    "es": "Consola de juegos",
+    "fr": "Console de jeu",
+    "it": "Console di gioco",
+    "ja": "\u30b2\u30fc\u30e0\u6a5f",
+    "pt": "Consola de jogos",
+    "pt-rBR": "Console de jogos",
+    "hi": "\u0917\u0947\u092e \u0915\u0902\u0938\u094b\u0932"
+   }
   },
   {
    "type": "DVD_PLAYER",
    "label": "DVD Player",
-   "short": "DVD"
+   "short": "DVD",
+   "labels": {
+    "de": "DVD-Player",
+    "es": "Reproductor de DVD",
+    "fr": "Lecteur DVD",
+    "it": "Lettore DVD",
+    "ja": "DVD\u30d7\u30ec\u30fc\u30e4\u30fc",
+    "pt": "Leitor de DVD",
+    "pt-rBR": "DVD player",
+    "hi": "DVD \u092a\u094d\u0932\u0947\u092f\u0930"
+   }
   },
   {
    "type": "BLU_RAY",
    "label": "Blu-ray",
-   "short": "BD"
+   "short": "BD",
+   "labels": {}
   },
   {
    "type": "CABLE_TV",
    "label": "Cable TV",
-   "short": "CATV"
+   "short": "CATV",
+   "labels": {
+    "de": "Kabelfernsehen",
+    "es": "TV por cable",
+    "fr": "T\u00e9l\u00e9vision par c\u00e2ble",
+    "it": "TV via cavo",
+    "ja": "\u30b1\u30fc\u30d6\u30eb\u30c6\u30ec\u30d3",
+    "pt": "TV por cabo",
+    "pt-rBR": "TV a cabo",
+    "hi": "\u0915\u0947\u092c\u0932 \u091f\u0940\u0935\u0940"
+   }
   },
   {
    "type": "SATELLITE",
    "label": "Satellite",
-   "short": "SAT"
+   "short": "SAT",
+   "labels": {
+    "de": "Satellit",
+    "es": "Sat\u00e9lite",
+    "fr": "Satellite",
+    "it": "Satellite",
+    "ja": "\u885b\u661f\u653e\u9001",
+    "pt": "Sat\u00e9lite",
+    "pt-rBR": "Sat\u00e9lite",
+    "hi": "\u0938\u0948\u091f\u0947\u0932\u093e\u0907\u091f"
+   }
   },
   {
    "type": "DVR",
    "label": "DVR",
-   "short": "DVR"
+   "short": "DVR",
+   "labels": {}
   },
   {
    "type": "MEDIA_PLAYER",
    "label": "Media Player",
-   "short": "MP"
+   "short": "MP",
+   "labels": {
+    "de": "Medienplayer",
+    "es": "Reproductor multimedia",
+    "fr": "Lecteur multim\u00e9dia",
+    "it": "Lettore multimediale",
+    "ja": "\u30e1\u30c7\u30a3\u30a2\u30d7\u30ec\u30fc\u30e4\u30fc",
+    "pt": "Leitor multim\u00e9dia",
+    "pt-rBR": "Media player",
+    "hi": "\u092e\u0940\u0921\u093f\u092f\u093e \u092a\u094d\u0932\u0947\u092f\u0930"
+   }
   },
   {
    "type": "APPLE_TV",
    "label": "Apple TV",
-   "short": "ATV"
+   "short": "ATV",
+   "labels": {}
   },
   {
    "type": "PLAY_STATION",
    "label": "PlayStation",
-   "short": "PS"
+   "short": "PS",
+   "labels": {}
   },
   {
    "type": "PLAY_STATION_2",
    "label": "PlayStation 2",
-   "short": "PS2"
+   "short": "PS2",
+   "labels": {}
   },
   {
    "type": "PLAY_STATION_3",
    "label": "PlayStation 3",
-   "short": "PS3"
+   "short": "PS3",
+   "labels": {}
   },
   {
    "type": "PLAY_STATION_4",
    "label": "PlayStation 4",
-   "short": "PS4"
+   "short": "PS4",
+   "labels": {}
   },
   {
    "type": "ROKU",
    "label": "Roku",
-   "short": "ROKU"
+   "short": "ROKU",
+   "labels": {}
   },
   {
    "type": "XBOX",
    "label": "Xbox",
-   "short": "XBOX"
+   "short": "XBOX",
+   "labels": {}
   },
   {
    "type": "XBOX_ONE",
    "label": "Xbox One",
-   "short": "XB1"
+   "short": "XB1",
+   "labels": {}
   },
   {
    "type": "XBOX_360",
    "label": "Xbox 360",
-   "short": "X360"
+   "short": "X360",
+   "labels": {}
   },
   {
    "type": "WII",
    "label": "Nintendo Wii",
-   "short": "WII"
+   "short": "WII",
+   "labels": {}
   },
   {
    "type": "WII_U",
    "label": "Nintendo Wii U",
-   "short": "WIIU"
+   "short": "WIIU",
+   "labels": {}
   },
   {
    "type": "GAME_CUBE",
    "label": "GameCube",
-   "short": "GC"
+   "short": "GC",
+   "labels": {}
   },
   {
    "type": "TIVO",
    "label": "TiVo",
-   "short": "TIVO"
+   "short": "TIVO",
+   "labels": {}
   },
   {
    "type": "BS",
    "label": "BS",
-   "short": "BS"
+   "short": "BS",
+   "labels": {}
   },
   {
    "type": "CS",
    "label": "CS",
-   "short": "CS"
+   "short": "CS",
+   "labels": {}
   },
   {
    "type": "BS4K",
    "label": "BS4K",
-   "short": "BS4K"
+   "short": "BS4K",
+   "labels": {}
   },
   {
    "type": "BLUETOOTH",
    "label": "Bluetooth",
-   "short": "BT"
+   "short": "BT",
+   "labels": {}
   },
   {
    "type": "OPTICAL",
    "label": "Optical",
-   "short": "OPT"
+   "short": "OPT",
+   "labels": {
+    "de": "Optisch",
+    "es": "\u00d3ptico",
+    "fr": "Optique",
+    "it": "Ottico",
+    "ja": "\u5149\u30c7\u30b8\u30bf\u30eb",
+    "pt": "\u00d3tico",
+    "pt-rBR": "\u00d3ptico",
+    "hi": "\u0911\u092a\u094d\u091f\u093f\u0915\u0932"
+   }
   },
   {
    "type": "CS4K",
    "label": "CS4K",
-   "short": "CS4K"
+   "short": "CS4K",
+   "labels": {}
   },
   {
    "type": "VGA",
    "label": "VGA",
-   "short": "VGA"
+   "short": "VGA",
+   "labels": {}
   },
   {
    "type": "RECORDING_LIST",
    "label": "Recording List",
-   "short": "REC"
+   "short": "REC",
+   "labels": {
+    "de": "Aufnahmeliste",
+    "es": "Lista de grabaciones",
+    "fr": "Liste des enregistrements",
+    "it": "Elenco registrazioni",
+    "ja": "\u9332\u753b\u30ea\u30b9\u30c8",
+    "pt": "Lista de grava\u00e7\u00f5es",
+    "pt-rBR": "Lista de grava\u00e7\u00f5es",
+    "hi": "\u0930\u093f\u0915\u0949\u0930\u094d\u0921\u093f\u0902\u0917 \u0938\u0942\u091a\u0940"
+   }
   },
   {
    "type": "ARC",
    "label": "HDMI ARC",
-   "short": "ARC"
+   "short": "ARC",
+   "labels": {}
   },
   {
    "type": "NINTENDO_SWITCH",
    "label": "Nintendo Switch",
-   "short": "NSW"
+   "short": "NSW",
+   "labels": {}
   },
   {
    "type": "CHROMECAST",
    "label": "Chromecast",
-   "short": "CC"
+   "short": "CC",
+   "labels": {}
   },
   {
    "type": "FOUR_K",
    "label": "4K",
-   "short": "4K"
+   "short": "4K",
+   "labels": {}
   },
   {
    "type": "HDMI",
    "label": "HDMI",
-   "short": "HDMI"
+   "short": "HDMI",
+   "labels": {}
   },
   {
    "type": "DVB_S",
    "label": "DVB-S",
-   "short": "DVB-S"
+   "short": "DVB-S",
+   "labels": {}
   },
   {
    "type": "DVB_C",
    "label": "DVB-C",
-   "short": "DVB-C"
+   "short": "DVB-C",
+   "labels": {}
   },
   {
    "type": "DVB_T",
    "label": "DVB-T",
-   "short": "DVB-T"
+   "short": "DVB-T",
+   "labels": {}
   },
   {
    "type": "SAT_IP",
    "label": "SAT>IP",
-   "short": "SAT"
+   "short": "SAT",
+   "labels": {}
   },
   {
    "type": "DLNA_SOURCE",
    "label": "DLNA",
-   "short": "DLNA"
+   "short": "DLNA",
+   "labels": {}
   }
  ]
 }

@@ -1,0 +1,30 @@
+<resources>
+    <string name="eyebrow">Fire TV · Control de equipos</string>
+    <string name="intro">Cada entrada que añadas se convierte en una app propia en el launcher. Ábrela y el televisor cambia de entrada; la app se cierra sola.</string>
+    <string name="legend_select">Seleccionar: añadir o quitar el acceso directo</string>
+    <string name="legend_long">Mantener pulsado: cambiar a esta entrada ahora</string>
+    <string name="loading">Leyendo las entradas del Fire TV…</string>
+    <string name="no_root">Se necesita root (su) para leer la lista de equipos del Fire TV.</string>
+    <string name="status_count_none">Aún no hay accesos directos. Elige las entradas que usas.</string>
+    <plurals name="status_count">
+        <item quantity="one">%1$d acceso directo en el launcher</item>
+        <item quantity="other">%1$d accesos directos en el launcher</item>
+    </plurals>
+    <string name="adding">Añadiendo %1$s al launcher…</string>
+    <string name="removing">Quitando %1$s del launcher…</string>
+    <string name="shortcut_failed">No se pudo cambiar el acceso directo: %1$s</string>
+    <string name="pill_busy">Espera…</string>
+    <string name="added">%1$s añadido al launcher.</string>
+    <string name="removed">%1$s quitado del launcher.</string>
+    <string name="switching_to">Cambiando a %1$s…</string>
+    <string name="switch_failed">Error al cambiar: %1$s</string>
+    <string name="pill_on">Añadido</string>
+    <string name="pill_off">Añadir</string>
+    <string name="voice_phrase">«Cambia a %1$s»</string>
+    <string name="unknown_input">La app no admite este tipo de entrada.</string>
+    <string name="cd_badge">Distintivo de la entrada</string>
+    <string name="language">Idioma</string>
+    <string name="language_value">Idioma: %1$s</string>
+    <string name="language_system">Idioma del sistema</string>
+    <string name="language_choose">Elegir idioma</string>
+</resources>

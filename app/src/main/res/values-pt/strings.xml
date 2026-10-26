@@ -1,0 +1,31 @@
+<resources>
+    <!-- Português de Portugal (values-pt-rBR holds the Brazilian variant). -->
+    <string name="eyebrow">Fire TV · Controlo de equipamentos</string>
+    <string name="intro">Cada entrada que adicionar passa a ser uma app própria no launcher. Abra-a e o televisor muda de entrada; a app fecha-se sozinha.</string>
+    <string name="legend_select">Selecionar: adicionar ou remover o atalho</string>
+    <string name="legend_long">Manter premido: mudar já para esta entrada</string>
+    <string name="loading">A ler as entradas do Fire TV…</string>
+    <string name="no_root">É necessário root (su) para ler a lista de equipamentos do Fire TV.</string>
+    <string name="status_count_none">Ainda não há atalhos. Escolha as entradas que utiliza.</string>
+    <plurals name="status_count">
+        <item quantity="one">%1$d atalho no launcher</item>
+        <item quantity="other">%1$d atalhos no launcher</item>
+    </plurals>
+    <string name="adding">A adicionar %1$s ao launcher…</string>
+    <string name="removing">A remover %1$s do launcher…</string>
+    <string name="shortcut_failed">Não foi possível alterar o atalho: %1$s</string>
+    <string name="pill_busy">Aguarde…</string>
+    <string name="added">%1$s adicionado ao launcher.</string>
+    <string name="removed">%1$s removido do launcher.</string>
+    <string name="switching_to">A mudar para %1$s…</string>
+    <string name="switch_failed">A mudança falhou: %1$s</string>
+    <string name="pill_on">Adicionado</string>
+    <string name="pill_off">Adicionar</string>
+    <string name="voice_phrase">«Muda para %1$s»</string>
+    <string name="unknown_input">Este tipo de entrada não é suportado pela app.</string>
+    <string name="cd_badge">Distintivo da entrada</string>
+    <string name="language">Idioma</string>
+    <string name="language_value">Idioma: %1$s</string>
+    <string name="language_system">Idioma do sistema</string>
+    <string name="language_choose">Escolher idioma</string>
+</resources>

@@ -1,0 +1,30 @@
+<resources>
+    <string name="eyebrow">Fire TV · Controllo dispositivi</string>
+    <string name="intro">Ogni ingresso che aggiungi diventa un\'app a sé nel launcher. Aprila e il televisore cambia ingresso; l\'app si chiude da sola.</string>
+    <string name="legend_select">Seleziona: aggiungi o rimuovi la scorciatoia</string>
+    <string name="legend_long">Tieni premuto: passa subito a questo ingresso</string>
+    <string name="loading">Lettura degli ingressi dal Fire TV…</string>
+    <string name="no_root">Serve il root (su) per leggere l\'elenco dei dispositivi del Fire TV.</string>
+    <string name="status_count_none">Ancora nessuna scorciatoia. Scegli gli ingressi che usi.</string>
+    <plurals name="status_count">
+        <item quantity="one">%1$d scorciatoia nel launcher</item>
+        <item quantity="other">%1$d scorciatoie nel launcher</item>
+    </plurals>
+    <string name="adding">Aggiunta di %1$s al launcher…</string>
+    <string name="removing">Rimozione di %1$s dal launcher…</string>
+    <string name="shortcut_failed">Impossibile modificare la scorciatoia: %1$s</string>
+    <string name="pill_busy">Attendi…</string>
+    <string name="added">%1$s aggiunto al launcher.</string>
+    <string name="removed">%1$s rimosso dal launcher.</string>
+    <string name="switching_to">Passaggio a %1$s…</string>
+    <string name="switch_failed">Cambio non riuscito: %1$s</string>
+    <string name="pill_on">Aggiunto</string>
+    <string name="pill_off">Aggiungi</string>
+    <string name="voice_phrase">«Passa a %1$s»</string>
+    <string name="unknown_input">Questo tipo di ingresso non è supportato dall\'app.</string>
+    <string name="cd_badge">Badge dell\'ingresso</string>
+    <string name="language">Lingua</string>
+    <string name="language_value">Lingua: %1$s</string>
+    <string name="language_system">Lingua di sistema</string>
+    <string name="language_choose">Scegli la lingua</string>
+</resources>

@@ -1,0 +1,30 @@
+<resources>
+    <string name="eyebrow">Fire TV · Gerätesteuerung</string>
+    <string name="intro">Jeder hinzugefügte Eingang wird zu einer eigenen App im Launcher. Öffnen Sie sie, und der Fernseher wechselt den Eingang; die App schließt sich von selbst.</string>
+    <string name="legend_select">Auswählen: Verknüpfung hinzufügen oder entfernen</string>
+    <string name="legend_long">Gedrückt halten: jetzt zu diesem Eingang wechseln</string>
+    <string name="loading">Eingänge werden vom Fire TV gelesen…</string>
+    <string name="no_root">Root (su) wird benötigt, um die Geräteliste des Fire TV zu lesen.</string>
+    <string name="status_count_none">Noch keine Verknüpfungen. Wählen Sie die Eingänge, die Sie nutzen.</string>
+    <plurals name="status_count">
+        <item quantity="one">%1$d Verknüpfung im Launcher</item>
+        <item quantity="other">%1$d Verknüpfungen im Launcher</item>
+    </plurals>
+    <string name="adding">%1$s wird zum Launcher hinzugefügt…</string>
+    <string name="removing">%1$s wird aus dem Launcher entfernt…</string>
+    <string name="shortcut_failed">Verknüpfung konnte nicht geändert werden: %1$s</string>
+    <string name="pill_busy">Bitte warten…</string>
+    <string name="added">%1$s wurde zum Launcher hinzugefügt.</string>
+    <string name="removed">%1$s wurde aus dem Launcher entfernt.</string>
+    <string name="switching_to">Wechsel zu %1$s…</string>
+    <string name="switch_failed">Wechsel fehlgeschlagen: %1$s</string>
+    <string name="pill_on">Hinzugefügt</string>
+    <string name="pill_off">Hinzufügen</string>
+    <string name="voice_phrase">„Schalte auf %1$s um“</string>
+    <string name="unknown_input">Dieser Eingangstyp wird von der App nicht unterstützt.</string>
+    <string name="cd_badge">Eingangssymbol</string>
+    <string name="language">Sprache</string>
+    <string name="language_value">Sprache: %1$s</string>
+    <string name="language_system">Systemsprache</string>
+    <string name="language_choose">Sprache wählen</string>
+</resources>

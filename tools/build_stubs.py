@@ -72,7 +72,7 @@ def build_dex():
     return dexdir / "classes.dex"
 
 
-def build_stub(t, label, dex, vc, vn):
+def build_stub(t, label, dex, vc, vn, labels=None):
     key = t.lower()
     d = WORK / key
     shutil.rmtree(d, ignore_errors=True)
@@ -81,6 +81,12 @@ def build_stub(t, label, dex, vc, vn):
     esc = label.replace("&", "&amp;").replace("<", "&lt;").replace("'", "\\'")
     (d / "res" / "values" / "strings.xml").write_text(
         f'<resources><string name="label">{esc}</string></resources>', encoding="utf-8")
+    for qual, l in (labels or {}).items():
+        # Localised shortcut name: launchers show it in the system language.
+        ld = d / "res" / f"values-{qual}"
+        ld.mkdir()
+        e = l.replace("&", "&amp;").replace("<", "&lt;").replace("'", "\'")
+        (ld / "strings.xml").write_text(f'<resources><string name="label">{e}</string></resources>', encoding="utf-8")
     shutil.copy(RES_PNG / f"banner_{key}.png", d / "res" / "drawable-xhdpi" / "banner.png")
     shutil.copy(RES_PNG / f"ic_{key}.png", d / "res" / "drawable-xhdpi" / "ic.png")
     (d / "AndroidManifest.xml").write_text(MANIFEST.format(pkg=STUB_PKG_PREFIX + key, type=t, vc=vc, vn=vn), encoding="utf-8")
@@ -111,7 +117,7 @@ def main():
     dex = build_dex()
     total = 0
     for entry in types["types"]:
-        apk = build_stub(entry["type"], entry["label"], dex, vc, vn)
+        apk = build_stub(entry["type"], entry["label"], dex, vc, vn, entry.get("labels"))
         total += apk.stat().st_size
     print(f"built {len(types['types'])} stub APKs, {total // 1024} KB total -> {OUT}")
 

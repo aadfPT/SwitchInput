@@ -80,6 +80,17 @@ Open one and the TV switches input while a short "Switching to …" toast shows;
 closes by itself. New equipment added in Fire TV Settings appears in the list the next time
 you open Switch Input.
 
+## Languages
+
+The app follows the Fire TV system language and can be switched manually from the
+**Language** row on its screen. Available: English, Deutsch, Español, Français, Italiano,
+日本語, Português (Portugal), Português (Brasil) and हिन्दी. Input names such as "Antenna" or
+"Game Console" are translated too; brand names (PlayStation, Xbox, …) are not. The names of
+the shortcuts in the launcher follow the system language, as launchers do not know about the
+in-app choice.
+
+<img src="docs/screenshots/picker-pt.png" width="480" alt="The picker in Portuguese">
+
 ## Good to know
 
 - Each shortcut is a tiny separate package. Uninstalling Switch Input does not remove

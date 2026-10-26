@@ -24,6 +24,20 @@ description is in [README.md](README.md).
 
 Details of the reverse engineering, including the dead ends, are in [re/NOTES.md](re/NOTES.md).
 
+## Languages
+
+- UI strings: `app/src/main/res/values-<qualifier>/strings.xml` (de, es, fr, it, ja, pt = pt-PT,
+  pt-rBR, hi). `app_name` and `title` are `translatable="false"`: the app name stays "Switch Input".
+- Input names: `LABELS_I18N` in `tools/gen_inputs.py` → `values-<qualifier>/input_types.xml`
+  and, through `tools/input_types.json`, the stub packages' own `values-<qualifier>` strings,
+  so launcher shortcuts are named in the system language.
+- Override: `AppLocale.kt` stores the chosen BCP-47 tag in `Prefs` and applies it with
+  `AppCompatDelegate.setApplicationLocales` (persisted by `AppLocalesMetadataHolderService`).
+  `SwitchActivity` is not an AppCompat activity, so it localises its toasts through
+  `AppLocale.localized(context)`.
+- Translation context: "switch to" always means changing the TV input; "launcher" is the
+  home-screen app; "shortcut" is the small app added for one input.
+
 ## Toolchain (Windows, user-level via scoop)
 
 ```powershell

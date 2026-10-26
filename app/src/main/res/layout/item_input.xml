@@ -1,13 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- One input card: badge | name + what it blasts | shortcut state pill. -->
+<!-- One input card: badge | name + what it blasts | shortcut state pill.
+     The title auto-shrinks (20→14 sp) so long names and long translations of the pill
+     ("Adicionar", "Hinzufügen") share the row without breaking words. -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/card"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="6dp"
+    android:layout_marginTop="4dp"
+    android:layout_marginBottom="4dp"
+    android:layout_marginStart="6dp"
+    android:layout_marginEnd="6dp"
     android:orientation="horizontal"
     android:gravity="center_vertical"
-    android:padding="12dp"
+    android:paddingStart="14dp"
+    android:paddingEnd="14dp"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp"
     android:focusable="true"
     android:clickable="true"
     android:background="@drawable/card_bg">
@@ -53,9 +62,14 @@
             style="@style/Text.CardTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="20sp"
             android:maxLines="2"
             android:ellipsize="end"
+            android:breakStrategy="simple"
+            android:hyphenationFrequency="none"
+            app:autoSizeTextType="uniform"
+            app:autoSizeMinTextSize="14sp"
+            app:autoSizeMaxTextSize="20sp"
+            app:autoSizeStepGranularity="1sp"
             android:text="PlayStation" />
 
         <TextView
@@ -74,10 +88,11 @@
         style="@style/Text.Pill"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="11sp"
-        android:paddingStart="9dp"
-        android:paddingEnd="9dp"
-        android:paddingTop="4dp"
-        android:paddingBottom="4dp"
+        android:textSize="12sp"
+        android:letterSpacing="0.08"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
         android:text="@string/pill_off" />
 </LinearLayout>
