@@ -7,6 +7,36 @@ so you are straight back in your launcher.
 
 ![The Switch Input picker](docs/screenshots/picker.png)
 
+## Why
+
+Fire TV devices can control the TV they are plugged into: once you set up your TV and
+other equipment under **Settings → Equipment Control**, the stick knows how to switch the
+TV's inputs over HDMI-CEC or the remote's infrared blaster. Whether you can *use* that
+directly depends on the device. Some models and firmware versions offer an Inputs row or a
+button for it; others (this Fire TV Stick 4K Max on Fire OS 8 among them) keep the feature
+but only expose it through Alexa: you have to hold the voice button and say
+"Change to PlayStation" every time.
+
+Switch Input gives that function back to the remote. It reads the equipment you already
+configured in Settings, lets you pick which inputs you want, and turns each one into a
+regular TV app in your launcher. Opening the app sends Fire TV's Equipment Control engine
+the same "select input" instruction the Alexa cloud would send, then closes itself.
+
+### Why root is needed
+
+The input list and the switch command live inside Fire TV's own Equipment Control app,
+which is a privileged system component:
+
+- Its list of configured equipment is stored in a private database that other apps cannot
+  read. Switch Input reads it as root to know which inputs exist and which TV endpoint to
+  address.
+- The component that executes an input switch only accepts instructions from the system
+  (Alexa's directive broker). Switch Input delivers the same instruction as root, because
+  the normal permission to do so is reserved for Amazon-signed apps.
+
+Nothing else is changed on the stick: no system files are modified, and root is only used
+for those two operations plus installing the small per-input shortcut packages.
+
 ## What you get
 
 - **One app per input.** HDMI 1–4, antenna, and any equipment you added in Fire TV
@@ -20,7 +50,8 @@ so you are straight back in your launcher.
 
 ## Requirements
 
-- A Fire TV Stick with **root** (Magisk). Tested on a Fire TV Stick 4K Max, Fire OS 8.1.
+- A Fire TV Stick with **root** (Magisk); see [Why root is needed](#why-root-is-needed).
+  Tested on a Fire TV Stick 4K Max, Fire OS 8.1.
 - **Equipment Control** set up in Fire TV Settings, so "Alexa, change to …" already works.
 - ADB access to the stick, to install the app once.
 
