@@ -1,0 +1,13 @@
+getprop ro.product.model
+getprop ro.build.version.sdk
+getprop ro.build.version.release
+getprop ro.build.display.id
+getprop ro.product.brand
+id
+pm list packages
+pm list packages -3
+settings list secure
+settings list global
+cmd package query-activities -a android.intent.action.VOICE_COMMAND
+cmd package query-activities -a android.intent.action.ASSIST
+dumpsys activity services
