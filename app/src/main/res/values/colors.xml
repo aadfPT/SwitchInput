@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Design tokens. Dark, blue-biased neutrals (a TV is watched in a dim room) and one
+     amber "lamp" accent for the on state, like the standby light on a receiver.
+     Keep in sync with the palette in tools/gen_inputs.py. -->
+<resources>
+    <color name="bg">#FF0E1218</color>
+    <color name="surface">#FF171E28</color>
+    <color name="surface_focus">#FF22303F</color>
+    <color name="line">#FF2A3645</color>
+    <color name="fg">#FFEEF2F6</color>
+    <color name="muted">#FF8C99AA</color>
+    <color name="accent">#FFF2A93B</color>
+    <color name="accent_fg">#FF1A1206</color>
+    <color name="danger">#FFE0645A</color>
+</resources>

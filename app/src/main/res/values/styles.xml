@@ -1,6 +1,61 @@
 <resources>
     <style name="Theme.SourcesSwitcher" parent="Theme.AppCompat.NoActionBar">
-        <item name="android:windowBackground">#FF101418</item>
-        <item name="android:textColor">#FFECECEC</item>
+        <item name="android:windowBackground">@color/bg</item>
+        <item name="android:textColor">@color/fg</item>
+        <item name="android:colorAccent">@color/accent</item>
+        <item name="colorAccent">@color/accent</item>
+    </style>
+
+    <!-- Shortcut target: no window at all, the activity only sends the command and finishes. -->
+    <style name="Theme.SourcesSwitcher.Invisible" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowNoDisplay">true</item>
+        <item name="android:windowAnimationStyle">@null</item>
+    </style>
+
+    <!-- Type scale: condensed display face for names and badges, regular sans for prose. -->
+    <style name="Text.Eyebrow" parent="">
+        <item name="android:fontFamily">sans-serif-condensed</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:letterSpacing">0.14</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textColor">@color/accent</item>
+    </style>
+    <style name="Text.Display" parent="">
+        <item name="android:fontFamily">sans-serif-condensed</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">44sp</item>
+        <item name="android:textColor">@color/fg</item>
+    </style>
+    <style name="Text.Body" parent="">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:lineSpacingMultiplier">1.3</item>
+        <item name="android:textColor">@color/muted</item>
+    </style>
+    <style name="Text.CardTitle" parent="">
+        <item name="android:fontFamily">sans-serif-condensed</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">22sp</item>
+        <item name="android:textColor">@color/fg</item>
+    </style>
+    <style name="Text.CardMeta" parent="">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:textColor">@color/muted</item>
+    </style>
+    <style name="Text.Badge" parent="">
+        <item name="android:fontFamily">sans-serif-condensed</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/accent</item>
+        <item name="android:gravity">center</item>
+    </style>
+    <style name="Text.Pill" parent="">
+        <item name="android:fontFamily">sans-serif-condensed</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:letterSpacing">0.08</item>
+        <item name="android:textAllCaps">true</item>
     </style>
 </resources>

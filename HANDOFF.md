@@ -1,18 +1,22 @@
 # Handoff: Alexa input-switcher app for FireStick
 
-## Status (2026-10-26)
+## Status (2026-10-26, evening)
 Working and installed on the stick (192.168.1.141:5555, Fire OS 8.1.8.0, Magisk 30.7).
-See README.md for usage and re/NOTES.md for the reverse-engineering details.
+Second iteration: the app is now a picker that enables one launcher shortcut (activity-alias)
+per input; each shortcut switches and closes itself. See README.md for usage and
+re/NOTES.md for the reverse-engineering details.
 
 Verified on the device through logcat (`OZ-DCS:NativeDirectiveServiceHandler ...
-Directive handling complete, success : true`):
-- "Test now" on the setup screen,
-- the launcher tile (MainActivity) – sends the saved input and returns to Projectivy,
-- the injected directive for STARK (Fire TV itself) and for HDMI_2.
+Directive handling complete, success : true`) and `cmd package query-activities`:
+- toggling a card enables/disables its alias, which then is/isn't listed as a
+  LEANBACK_LAUNCHER entry,
+- `am start -n pt.aadf.sourcesswitcher/.Shortcut_STARK` switches and leaves Projectivy
+  as the resumed activity,
+- the main screen renders as designed (diag/main_screen.png).
 
-The saved configuration was cleared after testing, so the first launch of the tile opens
-the setup screen. Magisk already holds an allow policy for the app (uid 10245), which
-survives `adb install -r`.
+All shortcuts were disabled again after testing, so the launcher only shows "Switch Input"
+until the user adds some. Magisk already holds an allow policy for the app (uid 10245),
+which survives `adb install -r`.
 
 ## What was tried and rejected
 - `tvinput://tunebyprovider?providerId=<activity>` → `SwitchInputReceiver`: the service it
@@ -21,7 +25,6 @@ survives `adb install -r`.
   third-party app without an `app_process` root helper.
 
 ## Possible follow-ups
-- One tile per input (activity-aliases or Android TV shortcuts) instead of one configurable tile.
 - Read inputs through `content://com.amazon.tv.devicecontrol.repository/ACTIVITIES_PATH`
   (root `content query`) instead of copying the SQLite file.
 - Release signing config so `install -r` works with a stable key outside debug builds.

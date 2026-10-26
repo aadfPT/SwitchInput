@@ -1,0 +1,11 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="320dp" android:height="180dp"
+    android:viewportWidth="320" android:viewportHeight="180">
+    <!-- App banner: dark field, HDMI plug outline, amber indicator. -->
+    <path android:fillColor="#171E28" android:pathData="M0,0h320v180h-320z"/>
+    <path android:strokeColor="#2A3645" android:strokeWidth="3" android:fillColor="#00000000"
+        android:pathData="M90,58 L230,58 L214,104 L106,104 Z"/>
+    <path android:strokeColor="#2A3645" android:strokeWidth="2" android:fillColor="#00000000"
+        android:pathData="M116,74 L116,88 M128,74 L128,88 M140,74 L140,88 M152,74 L152,88 M164,74 L164,88 M176,74 L176,88 M188,74 L188,88 M200,74 L200,88"/>
+    <path android:fillColor="#F2A93B" android:pathData="M148,128h24v4h-24z"/>
+</vector>

@@ -47,8 +47,9 @@ class InputRepository(private val ctx: Context) {
                         val act = pair.optJSONObject(1)?.optJSONArray("activate") ?: continue
                         for (k in 0 until act.length()) functions.add(act.getString(k))
                     }
-                    // STARK is DCS's internal name for the Fire TV itself.
-                    val label = if (type == "STARK") "Fire TV (this stick)" else name ?: prettify(type)
+                    // Prefer Fire TV's own display name for the type (res/values/input_types.xml,
+                    // generated from Definitions.ActivityType); "STARK" is the Fire TV itself.
+                    val label = name?.takeIf { it != type } ?: typeLabel(type) ?: prettify(type)
                     inputs.add(Input(id, type, label, functions))
                 }
             }
@@ -78,6 +79,11 @@ class InputRepository(private val ctx: Context) {
         } finally {
             db.close()
         }
+    }
+
+    private fun typeLabel(type: String): String? {
+        val id = ctx.resources.getIdentifier("input_" + type.lowercase(), "string", ctx.packageName)
+        return if (id != 0) ctx.getString(id) else null
     }
 
     private fun prettify(type: String): String =

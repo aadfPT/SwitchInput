@@ -1,15 +1,24 @@
 <resources>
     <string name="app_name">Switch Input</string>
-    <string name="config_title">Switch Input – Setup</string>
-    <string name="not_configured">No input configured yet. Opening setup…</string>
-    <string name="switching_to">Switching to %1$s…</string>
-    <string name="switch_failed">Switch failed: %1$s</string>
-    <string name="sent">Switch command sent to Fire TV Equipment Control.</string>
+    <string name="eyebrow">Fire TV · Equipment Control</string>
+    <string name="title">Switch Input</string>
+    <string name="intro">Each input you add becomes its own app in the launcher. Open it and the TV changes input; the app closes by itself.</string>
+    <string name="legend_select">Select: add or remove the shortcut</string>
+    <string name="legend_long">Hold: switch to it now</string>
     <string name="loading">Reading inputs from Fire TV…</string>
     <string name="no_root">Root (su) is required to read the Fire TV equipment list.</string>
-    <string name="pick_one">Select the input the launcher tile should switch to.</string>
-    <string name="current_choice">Current choice: %1$s. Select another to change it.</string>
-    <string name="saved">Saved. The launcher tile will now switch to %1$s.</string>
-    <string name="test_now">Test now</string>
-    <string name="test_now_x">Test now: %1$s</string>
+    <string name="status_count_none">No shortcuts yet. Pick the inputs you use.</string>
+    <plurals name="status_count">
+        <item quantity="one">%1$d shortcut in the launcher</item>
+        <item quantity="other">%1$d shortcuts in the launcher</item>
+    </plurals>
+    <string name="added">Added %1$s to the launcher.</string>
+    <string name="removed">Removed %1$s from the launcher.</string>
+    <string name="switching_to">Switching to %1$s…</string>
+    <string name="switch_failed">Switch failed: %1$s</string>
+    <string name="pill_on">Added</string>
+    <string name="pill_off">Add</string>
+    <string name="voice_phrase">“Alexa, change to %1$s”</string>
+    <string name="unknown_input">This input type is not supported by the app.</string>
+    <string name="cd_badge">Input badge</string>
 </resources>
