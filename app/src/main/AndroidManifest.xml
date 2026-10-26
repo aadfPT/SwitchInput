@@ -4,6 +4,10 @@
     <uses-feature android:name="android.software.leanback" android:required="false" />
     <uses-feature android:name="android.hardware.touchscreen" android:required="false" />
 
+    <permission
+        android:name="pt.aadf.sourcesswitcher.permission.SWITCH"
+        android:protectionLevel="signature" />
+
     <queries>
         <intent>
             <action android:name="android.intent.action.MAIN" />
@@ -31,6 +35,7 @@
         <activity
             android:name=".SwitchActivity"
             android:exported="true"
+            android:permission="pt.aadf.sourcesswitcher.permission.SWITCH"
             android:excludeFromRecents="true"
             android:noHistory="true"
             android:taskAffinity=""

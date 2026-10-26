@@ -9,8 +9,11 @@ object Switcher {
     private const val ENVELOPE_NAME = "Request"
 
     fun buildCommand(inputType: String, endpointId: String, deviceId: String): String {
+        val type = Safe.inputType(inputType)
+        val endpoint = Safe.endpointId(endpointId)
+        val device = Safe.deviceId(deviceId)
         val messageId = "sourcesswitcher-" + System.currentTimeMillis()
-        val envelope = alexaSelectInputEnvelope(inputType, endpointId, deviceId, messageId)
+        val envelope = alexaSelectInputEnvelope(type, endpoint, device, messageId)
         return "am broadcast -a $DIRECTIVE_BROADCAST -n $DIRECTIVE_RECEIVER" +
             " --es directiveId '$messageId' --es correlationToken '$messageId'" +
             " --es namespace $ENVELOPE_NAMESPACE --es name $ENVELOPE_NAME --es payloadVersion 3 --es keyMap '{}'" +

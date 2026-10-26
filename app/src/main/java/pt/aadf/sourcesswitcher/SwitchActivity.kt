@@ -11,7 +11,7 @@ class SwitchActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val app = AppLocale.localized(applicationContext)
-        val type = intent?.getStringExtra("input")?.takeIf { it.isNotBlank() }
+        val type = intent?.getStringExtra("input")?.let { runCatching { Safe.inputType(it) }.getOrNull() }
         if (type == null) {
             Toast.makeText(app, R.string.unknown_input, Toast.LENGTH_SHORT).show()
             finish()

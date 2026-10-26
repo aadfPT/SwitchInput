@@ -10,12 +10,13 @@ object Root {
         val text get() = String(stdout)
     }
 
-    fun run(cmd: String): Result {
+    fun run(cmd: String, stdin: ByteArray? = null): Result {
         val p = ProcessBuilder("su", GLOBAL_MOUNT_NAMESPACE, "-c", cmd).start()
         val out = ByteArrayOutputStream()
         var err = ByteArray(0)
         val errReader = Thread { err = p.errorStream.readBytes() }
         errReader.start()
+        p.outputStream.use { if (stdin != null) it.write(stdin) }
         p.inputStream.copyTo(out)
         val code = p.waitFor()
         errReader.join()

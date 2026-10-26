@@ -27,3 +27,4 @@ re/data/
 diag/*.txt
 # Release artifacts
 dist/
+diag/projectivy_allapps.png

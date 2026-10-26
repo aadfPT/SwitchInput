@@ -1,4 +1,5 @@
-$script:FireAddr = if ($env:FIRE_TV_ADDR) { $env:FIRE_TV_ADDR } else { "192.168.1.141:5555" }
+if (-not $env:FIRE_TV_ADDR) { throw "Set FIRE_TV_ADDR to the stick's adb address, e.g. 192.168.1.50:5555" }
+$script:FireAddr = $env:FIRE_TV_ADDR
 
 function Connect-Fire {
     adb start-server | Out-Null

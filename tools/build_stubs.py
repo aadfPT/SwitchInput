@@ -24,6 +24,7 @@ MANIFEST = """<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="{pkg}" android:versionCode="{vc}" android:versionName="{vn}">
     <uses-sdk android:minSdkVersion="25" android:targetSdkVersion="34" />
+    <uses-permission android:name="pt.aadf.sourcesswitcher.permission.SWITCH" />
     <uses-feature android:name="android.software.leanback" android:required="false" />
     <uses-feature android:name="android.hardware.touchscreen" android:required="false" />
     <application android:label="@string/label" android:icon="@drawable/ic"

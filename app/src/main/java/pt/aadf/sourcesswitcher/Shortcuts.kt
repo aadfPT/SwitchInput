@@ -2,43 +2,39 @@ package pt.aadf.sourcesswitcher
 
 import android.content.Context
 import android.content.pm.PackageManager
-import java.io.File
 
 object Shortcuts {
     private const val STUB_PACKAGE_PREFIX = "pt.aadf.sourcesswitcher.input."
 
-    fun packageFor(type: String) = STUB_PACKAGE_PREFIX + type.lowercase()
+    fun packageFor(type: String) = STUB_PACKAGE_PREFIX + Safe.inputType(type).lowercase()
 
-    private fun stubAsset(type: String) = "stubs/" + type.lowercase() + ".apk"
+    private fun stubAsset(type: String) = "stubs/" + Safe.inputType(type).lowercase() + ".apk"
 
     fun exists(ctx: Context, type: String): Boolean =
         try { ctx.assets.open(stubAsset(type)).close(); true } catch (e: Exception) { false }
 
-    fun isEnabled(ctx: Context, type: String): Boolean = try {
-        ctx.packageManager.getPackageInfo(packageFor(type), 0); true
-    } catch (e: PackageManager.NameNotFoundException) { false }
+    fun isEnabled(ctx: Context, type: String): Boolean =
+        signedLikeUs(ctx, packageFor(type))
 
     fun setEnabled(ctx: Context, type: String, on: Boolean): String? =
-        if (on) install(ctx, type) else uninstall(type)
+        if (on) install(ctx, type) else uninstall(ctx, type)
 
     private fun install(ctx: Context, type: String): String? {
-        val apk = copyStubWhereRootCanRead(ctx, type)
-        val r = Root.run("pm install -r -t --user 0 '${apk.path}'")
-        apk.delete()
-        return failureText(r)
+        val apk = ctx.assets.open(stubAsset(type)).use { it.readBytes() }
+        return failureText(Root.run("pm install -r -t --user 0 -S ${apk.size}", stdin = apk))
     }
 
-    private fun uninstall(type: String): String? =
-        failureText(Root.run("pm uninstall --user 0 ${packageFor(type)}"))
+    private fun uninstall(ctx: Context, type: String): String? {
+        val pkg = packageFor(type)
+        if (!signedLikeUs(ctx, pkg)) return "not a Switch Input shortcut"
+        return failureText(Root.run("pm uninstall --user 0 $pkg"))
+    }
 
-    private fun copyStubWhereRootCanRead(ctx: Context, type: String): File {
-        val dir = File(ctx.filesDir, "stubs").apply { mkdirs() }
-        val apk = File(dir, type.lowercase() + ".apk")
-        ctx.assets.open(stubAsset(type)).use { input -> apk.outputStream().use { input.copyTo(it) } }
-        apk.setReadable(true, false)
-        dir.setExecutable(true, false)
-        ctx.filesDir.setExecutable(true, false)
-        return apk
+    private fun signedLikeUs(ctx: Context, pkg: String): Boolean = try {
+        ctx.packageManager.getPackageInfo(pkg, 0)
+        ctx.packageManager.checkSignatures(ctx.packageName, pkg) == PackageManager.SIGNATURE_MATCH
+    } catch (e: PackageManager.NameNotFoundException) {
+        false
     }
 
     private fun failureText(r: Root.Result): String? =

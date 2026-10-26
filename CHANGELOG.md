@@ -1,5 +1,20 @@
 # Changelog
 
+## 1.0.2 – 2026-10-27
+
+Hardening of the root path.
+
+- Only packages signed with the app's own key can start the switch activity
+  (signature-level permission); the shortcut packages request it.
+- Input type, endpoint id and device id are validated against strict patterns before any
+  root command is built.
+- Shortcut packages are streamed into `pm install` from the app process; no world-readable
+  copy of the APK is written to disk any more.
+- A package only counts as a Switch Input shortcut, and is only ever uninstalled, when its
+  signature matches the app's.
+- Tooling: the stick's address comes from `FIRE_TV_ADDR`; the first-session probe scripts
+  are gone.
+
 ## 1.0.1 – 2026-10-27
 
 - Shortcuts installed earlier are shown as added again after reopening the app

@@ -38,6 +38,24 @@ Details of the reverse engineering, including the dead ends, are in [re/NOTES.md
 - Translation context: "switch to" always means changing the TV input; "launcher" is the
   home-screen app; "shortcut" is the small app added for one input.
 
+## Security model
+
+The app runs `su` for three things only: reading Fire TV's device-control database,
+broadcasting the SelectInput directive, and installing/uninstalling shortcut packages.
+What keeps other apps from riding on that:
+
+- `SwitchActivity` is protected by `pt.aadf.sourcesswitcher.permission.SWITCH`
+  (`protectionLevel="signature"`): only packages signed with the same key as the app can
+  start it. The stub packages request that permission and are signed with the same key.
+- `Safe.kt` validates every value that is interpolated into a root command (input type,
+  endpoint id, device id). Values come from Fire TV's own database or from a stub's manifest;
+  anything outside the expected pattern is rejected before a command is built.
+- Shortcut APKs are streamed into `pm install -S` from the app's process; nothing is written
+  to a world-readable location. Uninstall only touches packages whose signature matches the
+  app's (`PackageManager.checkSignatures`), and only those count as installed shortcuts.
+- `MainActivity` takes no intent extras; it acts only on remote input.
+- Release builds are signed with a key kept outside the repository.
+
 ## Toolchain (Windows, user-level via scoop)
 
 ```powershell
@@ -48,7 +66,7 @@ pip install pillow
 ```
 
 `tools/env.ps1` puts the JDK and SDK on PATH for a shell; `tools/fire.ps1` wraps adb for the
-stick (edit `FireAddr` for yours).
+stick and requires `FIRE_TV_ADDR` (e.g. `$env:FIRE_TV_ADDR = "192.168.1.50:5555"`).
 
 ## Build and deploy
 
@@ -94,7 +112,7 @@ for root again because the app gets a new uid.
   `res/values/input_types.xml` and `res/drawable-xhdpi/*` are generated; `assets/stubs/` is
   build output (git-ignored).
 - `tools/` – `deploy.ps1`, `env.ps1`, `fire.ps1`, `gen_inputs.py`, `build_stubs.py`,
-  `stub/Trampoline.java`, plus the original adb probe batch.
+  `stub/Trampoline.java`.
 - `re/` – reverse-engineering notes; pulled APKs and jadx output are git-ignored.
 - `diag/` – screenshots captured on the device (the raw package dumps stay local, git-ignored).
 - `docs/screenshots/` – images used by the README.
