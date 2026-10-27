@@ -9,7 +9,11 @@ description is in [README.md](README.md).
    receives Alexa's cloud directives as a broadcast (`com.amazon.speech.SmartCloud_Request`
    to `.csmintegration.DirectiveReceiver`). The app injects the same broadcast as root with an
    `Alexa.InputController / SelectInput` directive for the TV endpoint
-   (`Switcher.kt`). The receiver is not exported, hence `su`.
+   (`Switcher.kt`). The receiver is not exported, hence `su`. DCS then actuates the TV
+   exactly as it does for the voice command: over HDMI-CEC where the configured equipment
+   supports input switching that way, otherwise an infrared blast through the paired Alexa
+   remote (the stick has no IR emitter of its own). Because a reboot can leave the engine's
+   remote-blaster gate (`show_dc_settings`) off, `Switcher.kt` sets it before every switch.
 2. **Input list.** DCS keeps the configured inputs ("activities") in its SQLite database
    `/data/data/com.amazon.tv.devicecontrol/databases/device_control_db`. `InputRepository.kt`
    copies it as root and reads the `activities` table plus the TV's endpoint id from
@@ -40,9 +44,9 @@ Details of the reverse engineering, including the dead ends, are in [re/NOTES.md
 
 ## Security model
 
-The app runs `su` for three things only: reading Fire TV's device-control database,
-broadcasting the SelectInput directive, and installing/uninstalling shortcut packages.
-What keeps other apps from riding on that:
+The app runs `su` for: reading Fire TV's device-control database, enabling equipment
+control (`settings put global show_dc_settings 1`), broadcasting the SelectInput directive,
+and installing/uninstalling shortcut packages. What keeps other apps from riding on that:
 
 - `SwitchActivity` is protected by `pt.aadf.sourcesswitcher.permission.SWITCH`
   (`protectionLevel="signature"`): only packages signed with the same key as the app can
@@ -54,6 +58,9 @@ What keeps other apps from riding on that:
   to a world-readable location. Uninstall only touches packages whose signature matches the
   app's (`PackageManager.checkSignatures`), and only those count as installed shortcuts.
 - `MainActivity` takes no intent extras; it acts only on remote input.
+- The `show_dc_settings` write is idempotent and only re-enables Fire TV's own "a
+  control-capable remote is paired" gate — the same value the Settings app writes when the
+  remote is paired. Without it DCS silently skips the infrared blast.
 - Release builds are signed with a key kept outside the repository.
 
 ## Toolchain (Windows, user-level via scoop)

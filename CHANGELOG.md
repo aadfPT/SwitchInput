@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.0.3 – 2026-10-27
+
+- Switching now re-enables Fire TV's equipment-control gate (`show_dc_settings`) before
+  every input change. A reboot could leave it off, after which switches silently did
+  nothing; the app no longer depends on that flag being set externally.
+- Documented that the switch takes the same path as the Alexa voice command: HDMI-CEC where
+  the TV supports input switching that way, otherwise an infrared blast through the paired
+  Fire TV remote.
+
 ## 1.0.2 – 2026-10-27
 
 Hardening of the root path.

@@ -34,8 +34,10 @@ which is a privileged system component:
   (Alexa's directive broker). Switch Input delivers the same instruction as root, because
   the normal permission to do so is reserved for Amazon-signed apps.
 
-Nothing else is changed on the stick: no system files are modified, and root is only used
-for those two operations plus installing the small per-input shortcut packages.
+Switch Input also sets one Fire TV setting (`show_dc_settings`) before each switch, so the
+engine's fallback to an infrared blast through your remote is never left disabled — a reboot
+can clear it. Nothing else is changed on the stick: no system files are modified, and root is
+only used for those operations plus installing the small per-input shortcut packages.
 
 ## What you get
 
@@ -97,6 +99,9 @@ in-app choice.
 
 - Each shortcut is a tiny separate package. Uninstalling Switch Input does not remove
   shortcuts you added; remove them from the picker first.
+- The switch runs the same way as "Alexa, change to …": over HDMI-CEC on a TV that
+  supports input switching that way, otherwise an infrared blast from your Fire TV remote.
+  The infrared fallback needs the remote powered and within range of the TV.
 - Everything runs locally on the stick. Nothing is sent anywhere.
 
 ## For developers

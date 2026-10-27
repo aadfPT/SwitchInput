@@ -7,6 +7,7 @@ object Switcher {
     private const val DIRECTIVE_BROADCAST = "com.amazon.speech.SmartCloud_Request"
     private const val ENVELOPE_NAMESPACE = "SmartCloud"
     private const val ENVELOPE_NAME = "Request"
+    private const val ENABLE_EQUIPMENT_CONTROL = "settings put global show_dc_settings 1"
 
     fun buildCommand(inputType: String, endpointId: String, deviceId: String): String {
         val type = Safe.inputType(inputType)
@@ -36,7 +37,7 @@ object Switcher {
             .toString()
 
     fun switchTo(inputType: String, endpointId: String, deviceId: String): String? {
-        val r = Root.run(buildCommand(inputType, endpointId, deviceId))
+        val r = Root.run("$ENABLE_EQUIPMENT_CONTROL; ${buildCommand(inputType, endpointId, deviceId)}")
         if (!r.ok) return "su exit ${r.exitCode}: ${r.stderr.ifEmpty { r.text }}"
         if (!r.text.contains("Broadcast completed")) return r.text.trim().ifEmpty { "no response from am" }
         return null
