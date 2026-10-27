@@ -62,7 +62,7 @@ the developer notes), then:
 
 ```bash
 adb connect <fire-tv-ip>:5555
-adb install -r SwitchInput-1.0.0.apk
+adb install -r SwitchInput-1.0.2.apk
 ```
 
 Magisk asks for root the first time the app runs; grant it. Updates install over the
@@ -103,3 +103,7 @@ in-app choice.
 
 How it works, how to build and deploy, and what was found inside Fire OS to make this
 possible: see [DEVELOPMENT.md](DEVELOPMENT.md).
+
+## License
+
+[MIT](LICENSE). Use it, change it, ship it, commercially or not; keep the notice.
